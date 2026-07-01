@@ -1,0 +1,16 @@
+{
+  "name": "pessoaviva",
+  "description": "Marketplace da equipe de agentes para criar sites e sistemas com o Claude Code.",
+  "owner": {
+    "name": "pessoaviva"
+  },
+  "plugins": [
+    {
+      "name": "agentes",
+      "source": "./",
+      "description": "Equipe de 5 agentes para criar sites e sistemas: criador-de-sites, designer, ciberseguranca, hacker e o comando /agentes:gerente que orquestra tudo.",
+      "version": "1.0.0",
+      "category": "development"
+    }
+  ]
+}
