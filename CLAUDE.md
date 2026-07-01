@@ -1,8 +1,8 @@
 # Equipe de Agentes de IA — Criação de Sites e Sistemas
 
-Este repositório contém uma equipe de **agentes especializados** para o Claude Code,
-pensada para construir sites e sistemas (simples ou complexos) de ponta a ponta, com
-a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 5).
+Este repositório é um **plugin do Claude Code** com uma equipe de agentes
+especializados para construir sites e sistemas (simples ou complexos) de ponta a
+ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 5).
 
 ## Os agentes
 
@@ -16,21 +16,33 @@ a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 5).
 
 > **Por que o "gerente" é um comando e não um agente?** No Claude Code, um subagente
 > roda isolado e não consegue dar ordens à IA principal nem chamar outros subagentes —
-> quem orquestra é sempre a IA principal. Por isso o Gerente é o comando `/gerente`:
-> ele injeta todo o passo-a-passo na IA principal e a coloca no comando da orquestração.
+> quem orquestra é sempre a IA principal. Por isso o Gerente é um comando: ele injeta
+> todo o passo-a-passo na IA principal e a coloca no comando da orquestração.
 
-## Como usar
+## Como usar em QUALQUER projeto — 2 formas
 
-1. **Fluxo completo automatizado:** digite `/gerente` e diga o que quer construir. A
-   IA vai conduzir as 4 fases (construção + design em paralelo → checkpoint →
-   segurança → pentest).
-2. **Acionar um agente específico:** peça em linguagem natural, ex.:
-   - "Use o agente criador-de-sites para montar um sistema de agendamento."
-   - "Chama o designer para deixar essa tela profissional."
-   - "Aciona o ciberseguranca para blindar o login."
-   - "Manda o hacker procurar falhas nesse sistema."
+### Forma 1 (recomendada): instalar como plugin
+Instala uma vez, vale em todos os projetos e atualiza fácil via `git`. Dentro do
+Claude Code:
 
-## O fluxo de trabalho (resumo)
+```
+/plugin marketplace add pessoaviva/agentes
+/plugin install agentes@pessoaviva
+```
+
+Depois, em qualquer projeto:
+- Comando: `/agentes:gerente` (fluxo completo)
+- Agentes: "use o agente criador-de-sites para...", etc. (aparecem em `/agents`)
+- Atualizar quando você mudar algo aqui: `/plugin marketplace update pessoaviva`
+
+### Forma 2: instalar no nível do usuário (sem plugin)
+Copia os arquivos para `~/.claude/`. O comando fica `/gerente` (sem prefixo).
+
+```bash
+bash instalar-agentes.sh
+```
+
+## O fluxo de trabalho (o que o gerente conduz)
 
 ```
 Fase 1  criador-de-sites  +  designer   (em paralelo: lógica + visual)
@@ -46,18 +58,22 @@ Fase 4  hacker  →  acha falhas  →  ciberseguranca corrige  →  hacker testa
         (repete até não sobrar falha crítica/alta)
 ```
 
-## Rodar em QUALQUER pasta (instalação global)
+## Estrutura do repositório (layout de plugin)
 
-Por padrão, esses agentes valem só neste projeto (ficam em `.claude/`). Para usá-los
-em **todas as suas pastas**, instale-os no nível do usuário (`~/.claude/`):
-
-```bash
-bash instalar-agentes.sh
 ```
-
-Isso copia os agentes para `~/.claude/agents/` e o comando `/gerente` para
-`~/.claude/commands/`. Depois disso, eles funcionam em qualquer diretório em que você
-abrir o Claude Code, sem precisar copiar nada.
+agentes/
+├── .claude-plugin/
+│   ├── plugin.json          # manifesto do plugin
+│   └── marketplace.json     # marketplace que publica este plugin
+├── agents/                  # os 4 agentes trabalhadores
+│   ├── criador-de-sites.md
+│   ├── designer.md
+│   ├── ciberseguranca.md
+│   └── hacker.md
+├── commands/
+│   └── gerente.md           # o orquestrador (vira /agentes:gerente)
+└── instalar-agentes.sh      # instalação alternativa em ~/.claude
+```
 
 ## Observação sobre o modelo
 

@@ -1,0 +1,3 @@
+# Configurações locais da máquina (não fazem parte do plugin)
+.claude/settings.local.json
+.claude/
