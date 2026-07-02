@@ -42,6 +42,28 @@ Copia os arquivos para `~/.claude/`. O comando fica `/gerente` (sem prefixo).
 bash instalar-agentes.sh
 ```
 
+### Forma 3: dentro do projeto (funciona na nuvem / Claude Code na web / desktop)
+O comando `/plugin` **só existe no Claude Code local (do seu PC)**. No Claude Code na
+nuvem (web/desktop remoto) ele não está disponível. Para usar os agentes lá, coloque
+a pasta `.claude/` **dentro do projeto** — é o que este repositório já traz pronto:
+
+```
+seu-projeto/
+└── .claude/
+    ├── agents/        # criador-de-sites, designer, ciberseguranca, hacker
+    └── commands/
+        └── gerente.md # vira /gerente (sem prefixo, pois não é plugin)
+```
+
+Basta copiar a pasta `.claude/` deste repositório para dentro do projeto do cliente,
+commitar, e abrir uma sessão nova. Os agentes carregam automaticamente e rodam igual
+(o Claude principal aciona cada subagente de verdade). Atalho: em uma sessão na nuvem,
+peça *"copie os agentes de github.com/pessoaviva/agentes para a pasta .claude deste
+projeto"*.
+
+> Os agentes são lidos **no início da sessão**. Se acabou de adicionar a pasta
+> `.claude/`, abra uma sessão nova no projeto para eles aparecerem.
+
 ## O fluxo de trabalho (o que o gerente conduz)
 
 ```
