@@ -1,16 +1,17 @@
 # agentes
 
-Plugin do **Claude Code** com uma equipe de **5 agentes de IA** para criar sites e
-sistemas (simples ou complexos) de ponta a ponta, com a inteligência do modelo que
-você usar (Opus 4.8 / Fable 5).
+Plugin do **Claude Code** com uma equipe de **6 agentes de IA** para criar e manter
+sites e sistemas (simples ou complexos) de ponta a ponta, com a inteligência do modelo
+que você usar (Opus 4.8 / Fable 5).
 
-## Os 5 agentes
+## Os 6 agentes
 
 1. **criador-de-sites** — escreve todo o código-fonte (lógica, back-end, banco, APIs).
 2. **designer** — cria todo o front-end e o design (nível "Claude design").
 3. **ciberseguranca** — cria o login e blinda a segurança do sistema (OWASP).
 4. **hacker** — pentester ético: tenta quebrar o sistema pronto e reporta as falhas.
-5. **/gerente** — comando que orquestra tudo na ordem certa (o "gerente" da equipe).
+5. **corretor-de-bugs** — conserta bugs pós-lançamento (manutenção/incidentes).
+6. **/gerente** — comando que orquestra tudo como uma rede neural (o "gerente" da equipe).
 
 ## Instalar e usar em QUALQUER projeto
 
@@ -38,8 +39,8 @@ bash instalar-agentes.sh
 ## Fluxo de trabalho
 
 ```
-criador-de-sites + designer  →  ✅ sistema pronto  →  ciberseguranca  →  hacker (loop até ficar limpo)
-       (lógica + visual em paralelo)                    (login + blindagem)   (acha falhas → corrige → testa de novo)
+criador-de-sites + designer  →  ✅ sistema pronto  →  ciberseguranca  →  hacker  →  🐛 corretor-de-bugs
+       (lógica + visual em paralelo)                    (login+blindagem)  (pentest)   (manutenção pós-lançamento)
 ```
 
 Detalhes completos em [`CLAUDE.md`](./CLAUDE.md).

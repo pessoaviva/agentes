@@ -111,6 +111,9 @@ ativamente de todos estes clichês:**
   estrutura funcional (marcação, dados, comportamento). **Você lapida o visual.** Não
   reescreva a lógica nem invada a parte do back-end — estilize o que já existe.
 - Combine com eles o vocabulário (nomes de componentes e classes) para não conflitar.
+- **🧠 Pense em equipe:** você é um "neurônio" conectado pela IA principal (o hub).
+  Declare suas suposições e sua confiança, e devolva conclusão + o que precisa dos
+  outros agentes + dúvidas em aberto — assim a equipe converge para uma conclusão só.
 
 ## 💸 Economia de créditos
 

@@ -12,7 +12,14 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 | **designer** | Cria todo o front-end e o design (nível "Claude design") | Fase 1 — em paralelo |
 | **ciberseguranca** | Cria login e blinda a segurança (OWASP) | Fase 3 — depois do sistema pronto |
 | **hacker** | Pentester ético: acha as falhas e reporta | Fase 4 — por último |
-| **/gerente** (comando) | Orquestra tudo na ordem certa | Sempre que quiser conduzir o fluxo completo |
+| **corretor-de-bugs** | Conserta bugs pós-lançamento (manutenção/incidentes) | Fase 5 — app já no ar |
+| **/gerente** (comando) | Orquestra tudo como uma rede neural, na ordem certa | Sempre que quiser conduzir o fluxo completo |
+
+> **Rede neural de pensamento:** a IA principal (Opus 4.8 / Fable 5) é o "córtex/hub" e
+> os agentes são neurônios especializados. Como subagentes não conversam entre si, eles
+> se conectam **através da IA principal** + um contexto compartilhado (o "resumo do
+> projeto"). Cada agente declara suas suposições, sua confiança e o que precisa dos
+> outros; a IA principal sintetiza e converge para uma conclusão só.
 
 > **Por que o "gerente" é um comando e não um agente?** No Claude Code, um subagente
 > roda isolado e não consegue dar ordens à IA principal nem chamar outros subagentes —
@@ -50,7 +57,7 @@ a pasta `.claude/` **dentro do projeto** — é o que este repositório já traz
 ```
 seu-projeto/
 └── .claude/
-    ├── agents/        # criador-de-sites, designer, ciberseguranca, hacker
+    ├── agents/        # criador-de-sites, designer, ciberseguranca, hacker, corretor-de-bugs
     └── commands/
         └── gerente.md # vira /gerente (sem prefixo, pois não é plugin)
 ```
@@ -78,6 +85,10 @@ Fase 3  ciberseguranca     (cria login + blinda segurança)
            ▼
 Fase 4  hacker  →  acha falhas  →  ciberseguranca corrige  →  hacker testa de novo
         (repete até não sobrar falha crítica/alta)
+           │
+           ▼
+Fase 5  🐛 App no ar  →  corretor-de-bugs conserta bugs pós-lançamento
+        (reproduz → causa-raiz → menor correção segura → testa regressão)
 ```
 
 ## Estrutura do repositório (layout de plugin)
@@ -87,11 +98,12 @@ agentes/
 ├── .claude-plugin/
 │   ├── plugin.json          # manifesto do plugin
 │   └── marketplace.json     # marketplace que publica este plugin
-├── agents/                  # os 4 agentes trabalhadores
+├── agents/                  # os 5 agentes trabalhadores
 │   ├── criador-de-sites.md
 │   ├── designer.md
 │   ├── ciberseguranca.md
-│   └── hacker.md
+│   ├── hacker.md
+│   └── corretor-de-bugs.md
 ├── commands/
 │   └── gerente.md           # o orquestrador (vira /agentes:gerente)
 └── instalar-agentes.sh      # instalação alternativa em ~/.claude

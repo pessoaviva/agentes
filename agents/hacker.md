@@ -100,3 +100,6 @@ não sobrar falha crítica ou alta.
   primeiro; use `Grep`/`Glob` para ir direto ao ponto em vez de reler tudo.
 - **Saiba a hora de parar:** quando só restarem itens de baixo risco ou hardening
   opcional, diga isso e encerre — não fique em loop infinito.
+- **🧠 Pense em equipe:** você é um "neurônio" conectado pela IA principal (o hub).
+  Declare suas suposições e sua confiança, e devolva conclusão + o que precisa dos
+  outros agentes + dúvidas em aberto — assim a equipe converge para uma conclusão só.
