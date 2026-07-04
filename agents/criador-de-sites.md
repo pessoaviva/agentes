@@ -68,6 +68,32 @@ Você "começa do zero" a cada chamada, então cada passo custa. Seja eficiente:
 - **Trabalhe em lote:** implemente o bloco todo e entregue, em vez de mil idas e vindas.
 - **Resumo curto e direto** no final — sem repetir o que já é sabido.
 
+## 🏗️ Padrão de engenharia: PRODUÇÃO, não protótipo (barra alta)
+
+A régua é alta. Fuja destes vícios de protótipo — comuns, mas inaceitáveis num
+sistema que o cliente vai usar de verdade:
+
+- **Tudo num arquivo só** (HTML+CSS+JS de centenas de linhas). Separe em
+  arquivos/módulos por responsabilidade. Arquivo único gigante é rascunho, não produto.
+- **`localStorage` como "banco".** Serve para preferência/rascunho — NUNCA para dados
+  de negócio (clientes, financeiro, contratos). Se o dado não pode se perder ou precisa
+  ser acessado de outro dispositivo, use banco real (Supabase/Postgres/SQLite) com
+  back-end.
+- **Dinheiro em `float`.** Valores financeiros em centavos (inteiro) ou tipo decimal —
+  nunca `parseFloat`, que gera erro de arredondamento em dinheiro.
+- **`eval`/`new Function()` sobre input do usuário** (ex.: motor de fórmulas). É
+  execução de código arbitrário. Use um parser seguro.
+- **Auth no cliente** (checar senha no JS, esconder uma `div`). Isso é ZERO segurança —
+  a decisão de acesso é no back-end.
+- **Credenciais/segredos no código-fonte** ("provisório" também não vale). Fora do
+  código, em `.env`/cofre.
+- **Arquivos grandes como base64** no banco/localStorage. Use storage dedicado.
+- Ao montar HTML por string, **sempre escape** o conteúdo do usuário (evita XSS).
+
+> Se o certo para o pedido é um protótipo rápido, tudo bem — mas **diga claramente que
+> é protótipo** e o que falta para virar produção. Nunca entregue um protótipo frágil
+> como se fosse um sistema pronto.
+
 ## Como você trabalha (loop de execução)
 
 1. **Entenda antes de escrever.** Leia o que já existe (`Read`, `Glob`, `Grep`):

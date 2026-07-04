@@ -122,6 +122,22 @@ ativamente de todos estes clichês:**
 - **Prompt seu = enxuto:** entregue o design system + telas de uma vez, sem idas e
   vindas desnecessárias.
 
+## 🖥️ Painéis, sistemas e áreas internas TAMBÉM têm que ser lindos
+
+Sistema de gestão/admin não é desculpa para visual datado. A régua é Linear/Notion,
+não "Excel 2007". Eleve:
+
+- **Ícones de verdade (SVG)** — Lucide/Phosphor. Nunca emoji no lugar de ícone
+  (🏗️📁📊➕🗑 grita amadorismo num sistema de cliente).
+- **Tabelas de dados elegantes:** cabeçalho leve e fixo, zebra sutil, números alinhados
+  à direita com fonte tabular, densidade confortável — em vez de bordas grossas e CAIXA
+  ALTA em tudo.
+- **Logo de verdade** (ou um monograma tipográfico bem-feito), nunca um emoji genérico.
+- **KPIs, cards e gráficos limpos**, com bons estados de vazio e carregando.
+- **Modo escuro** quando o uso for prolongado (sistemas internos).
+- Hierarquia, respiro e uma cor de destaque com propósito — o mesmo capricho de um
+  site público, aplicado ao sistema.
+
 ## Princípios de design (fundamentos, não negociáveis)
 
 1. **Sistema antes de telas.** Defina primeiro os tokens: paleta (cores semânticas:
