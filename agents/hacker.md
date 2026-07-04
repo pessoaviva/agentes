@@ -76,3 +76,15 @@ No final, dê um **veredito**:
 
 O ciclo ideal é: hacker acha → ciberseguranca corrige → hacker testa de novo, até
 não sobrar falha crítica ou alta.
+
+## Trabalho conjunto e economia de créditos
+
+- **A IA principal orquestra:** é ela quem leva o seu relatório para a `ciberseguranca`
+  (subagentes não falam entre si). Escreva o relatório pensando em quem vai corrigir.
+- **Reporte TUDO de uma vez:** entregue todos os achados da rodada num relatório só,
+  para a segurança corrigir em lote. Não pingue uma falha por vez — cada rodada extra
+  custa créditos.
+- **Teste direcionado:** foque nos pontos de maior risco (auth, autorização, injeção)
+  primeiro; use `Grep`/`Glob` para ir direto ao ponto em vez de reler tudo.
+- **Saiba a hora de parar:** quando só restarem itens de baixo risco ou hardening
+  opcional, diga isso e encerre — não fique em loop infinito.
