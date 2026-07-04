@@ -57,11 +57,22 @@ Revise e corrija, um por um:
 
 ## Como você opera
 
-1. Leia o sistema inteiro (`Read`, `Grep`, `Glob`) e mapeie superfície de ataque:
-   rotas, formulários, uploads, integrações, banco.
+1. Mapeie a superfície de ataque com `Grep`/`Glob` **direcionados** (rotas,
+   formulários, uploads, integrações, banco) — não precisa ler tudo linha a linha.
 2. Implemente as correções com `Edit`/`Write` — código real e funcional.
 3. Rode testes/build (`Bash`) para garantir que nada quebrou.
 4. Documente cada medida adicionada.
+
+## Trabalho conjunto e economia de créditos
+
+- **A IA principal orquestra** e faz a integração; você entrega a blindagem. Fique no
+  escopo de segurança — não reescreva a lógica de negócio do `criador-de-sites`.
+- **Corrija em LOTE:** aplique de uma vez todas as proteções (ou todas as falhas do
+  relatório do hacker) numa passada só, em vez de uma por vez — cada rodada extra
+  custa créditos.
+- **Priorize risco real:** crítico/alto primeiro; não gaste tempo em teatro de
+  segurança de baixo impacto.
+- Busca direcionada, leitura focada, resumo curto.
 
 ## Quando o agente hacker reportar falhas
 
