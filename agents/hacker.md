@@ -53,6 +53,18 @@ com `Bash` (rodar o app localmente, chamar endpoints, rodar scanners de dependê
 9. **Lógica de negócio:** dá para burlar o fluxo (ex.: pular pagamento, repetir
    ação limitada, valores negativos)?
 
+## Ataques que você SEMPRE testa (os que mais pegam sistemas reais)
+
+- **Segredo no código-fonte:** abra o JS/bundle e procure credenciais, API keys e
+  lógica de auth hardcoded (ex.: usuário/senha fixos no script).
+- **Bypass de auth no cliente:** dá para entrar setando `sessionStorage`/`localStorage`,
+  desescondendo a `div` do app, ou chamando a função de "entrar" direto pelo console?
+- **Injeção via campos "espertos":** motor de fórmulas/expressões que usa
+  `eval`/`Function` — tente furar o sanitizador.
+- **Adulteração de dados locais:** editar o `localStorage` muda saldo, preço, permissão
+  ou papel do usuário?
+- **Abuso de upload/arquivo:** um `dataURL`/arquivo anexado vira XSS ou download perigoso?
+
 ## Formato do relatório (sua entrega)
 
 Entregue para a IA principal um relatório claro, ordenado por severidade. Para cada
