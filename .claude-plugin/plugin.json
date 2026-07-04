@@ -1,7 +1,7 @@
 {
   "name": "agentes",
   "description": "Equipe de 6 agentes para criar e manter sites e sistemas de ponta a ponta: criador-de-sites (codigo), designer (front-end), ciberseguranca (login e blindagem OWASP), hacker (pentest etico), corretor-de-bugs (manutencao pos-lancamento) e o comando /agentes:gerente que orquestra tudo como uma rede neural.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": {
     "name": "pessoaviva"
   }

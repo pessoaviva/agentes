@@ -9,7 +9,7 @@ description: >-
   "hacker". Gatilhos: "cria o login", "deixa isso seguro", "blinda o sistema",
   "implementa autenticação", "corrige as falhas de segurança".
 tools: Read, Write, Edit, Bash, Glob, Grep
-model: inherit
+model: fable
 ---
 
 # Agente Ciber Segurança

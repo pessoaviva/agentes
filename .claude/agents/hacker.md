@@ -8,7 +8,7 @@ description: >-
   código de produção. Gatilhos: "tenta quebrar o sistema", "acha as falhas", "faz o
   pentest", "testa a segurança", "procura vulnerabilidades".
 tools: Read, Glob, Grep, Bash
-model: inherit
+model: fable
 ---
 
 # Agente Hacker (Red Team / Pentester Ético)

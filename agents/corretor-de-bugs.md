@@ -9,7 +9,7 @@ description: >-
   produção", "o cliente reclamou que", "corrige esse problema", "está travando",
   "hotfix", "não está salvando", "quebrou depois da atualização".
 tools: Read, Write, Edit, Bash, Glob, Grep
-model: inherit
+model: fable
 ---
 
 # Agente Corretor de Bugs (Manutenção / Incidentes)

@@ -109,8 +109,17 @@ agentes/
 └── instalar-agentes.sh      # instalação alternativa em ~/.claude
 ```
 
-## Observação sobre o modelo
+## Observação sobre o modelo (Fable 5 fixo)
 
-Os agentes usam `model: inherit` — ou seja, rodam com **o mesmo modelo da sua sessão
-principal**. Se você abrir o Claude Code com Fable 5 (ou Opus 4.8), os agentes herdam
-essa inteligência automaticamente.
+Os 5 agentes trabalhadores usam `model: fable` — ou seja, rodam com a inteligência do
+**Fable 5 mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo). Assim você
+sempre tem o melhor cérebro nos agentes, sem depender do modelo que abriu.
+
+- **Fallback automático e seguro:** se o Fable 5 não estiver disponível na sua sessão,
+  o Claude Code usa o modelo da sessão em vez de dar erro (o "mais próximo possível").
+- **O comando `/gerente` (o hub) roda no modelo da sessão** — ele é injetado na IA
+  principal e não dá para fixar o modelo dele. Então: abra a sessão em Fable 5 para ter
+  Fable 5 também na orquestração; os 5 agentes já vêm fixos em Fable 5 de qualquer forma.
+- **Custo:** o Fable 5 consome o limite de uso mais rápido. Se preferir que os agentes
+  sigam o modelo da sessão, troque `model: fable` por `model: inherit` nos arquivos de
+  `agents/`.

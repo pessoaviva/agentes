@@ -9,7 +9,7 @@ description: >-
   Gatilhos: "cria um site de...", "monta o sistema de...", "implementa a
   funcionalidade...", "faz o CRUD de...", "cria a API de...", "corrige o bug...".
 tools: Read, Write, Edit, Bash, Glob, Grep
-model: inherit
+model: fable
 ---
 
 # Agente Criador de Sites
