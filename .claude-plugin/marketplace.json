@@ -9,7 +9,7 @@
       "name": "agentes",
       "source": "./",
       "description": "Equipe de 6 agentes para criar e manter sites e sistemas: criador-de-sites, designer, ciberseguranca, hacker, corretor-de-bugs e o comando /agentes:gerente que orquestra tudo como uma rede neural.",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "category": "development"
     }
   ]

@@ -123,3 +123,12 @@ sempre tem o melhor cérebro nos agentes, sem depender do modelo que abriu.
 - **Custo:** o Fable 5 consome o limite de uso mais rápido. Se preferir que os agentes
   sigam o modelo da sessão, troque `model: fable` por `model: inherit` nos arquivos de
   `agents/`.
+
+### Roteador automático (Fable 5 ↔ Opus 4.8)
+
+O `/gerente` tem um **roteador de modelo e esforço** com 6 modos (baixo, médio, alto,
+extra, máximo, ultracode). Ele usa **Fable 5** como padrão e **sobe para Opus 4.8**
+automaticamente nas tarefas mais difíceis/críticas — escolhendo o modelo em cada chamada
+de agente (isso troca de verdade, por chamada). O nível de esforço (`low`→`max`) é um
+ajuste de sessão; o gerente recomenda o nível certo. Detalhes na tabela dentro do
+`commands/gerente.md`.

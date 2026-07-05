@@ -37,6 +37,34 @@ para uma conclusão só:
 - **Deliberação quando há dúvida real:** para decisões importantes, consulte os agentes
   relevantes, compare os pareceres e conclua — em vez de seguir um só cegamente.
 
+## 🎚️ Roteador de modelo e esforço (muda automaticamente conforme a necessidade)
+
+Você escolhe o "motor" de cada tarefa — usando o modo mais barato que dá conta e
+**subindo só quando a tarefa exige**. Ao acionar um agente (Task), **defina o parâmetro
+`model`** conforme a tabela (isso troca de verdade, por chamada):
+
+| Modo | Modelo | Esforço | Quando usar (você decide sozinho) |
+|---|---|---|---|
+| **Baixo** | Fable 5 | baixo (`low`) | trivial: texto, renomear, ajuste de 1 linha, pergunta simples |
+| **Médio** | Fable 5 | médio (`medium`) | CRUD simples, 1 componente, estilo de 1 tela, bug óbvio |
+| **Alto** | Fable 5 | alto (`high`) | feature completa, design system, blindagem padrão, refactor médio |
+| **Extra** | Opus 4.8 | extra (`xhigh`) | lógica complexa, arquitetura, integração difícil, muitos arquivos |
+| **Máximo** | Opus 4.8 | máximo (`max`) | segurança crítica, bug difícil de produção, dados/dinheiro sensíveis |
+| **Ultracode** | Opus 4.8 | máximo + auto-revisão | o código mais difícil: o agente pensa, escreve, **revisa a própria saída** e testa com rigor extra antes de entregar |
+
+**Regra automática:** comece no modo mais barato que resolve e **suba de modo só quando
+a tarefa pedir** (complexidade, risco, segurança ou dinheiro envolvidos). Diga ao
+usuário, em 1 linha, qual modo está usando e por quê (ex.: "usando Opus 4.8 no máximo,
+porque é a camada de pagamento"). No modo **Ultracode**, instrua o agente a fazer uma
+passada de auto-revisão do próprio código antes de devolver.
+
+> **O que troca sozinho de verdade:** o **modelo** (Fable 5 ↔ Opus 4.8), porque você o
+> escolhe em cada chamada de agente. O **nível de esforço** (baixo→máximo) é um ajuste
+> da **sessão** (na sua versão do Claude Code) — mantenha-o alto para trabalho crítico
+> ou peça ao usuário para subir. "Ultracode" é um preset (Opus 4.8 no máximo + auto-
+> revisão), não um motor separado. Os agentes já vêm com Fable 5 como padrão; você
+> sobe para Opus 4.8 nos modos Extra/Máximo/Ultracode.
+
 ## Como dividir o trabalho — e ECONOMIZAR CRÉDITOS (leia com atenção)
 
 Cada subagente **começa do zero**: ele não vê esta conversa e relê arquivos para se
