@@ -8,7 +8,7 @@ description: >-
   bombeiro de produção. Gatilhos: "tem um bug", "parou de funcionar", "deu erro em
   produção", "o cliente reclamou que", "corrige esse problema", "está travando",
   "hotfix", "não está salvando", "quebrou depois da atualização".
-tools: Read, Write, Edit, Bash, Glob, Grep
+tools: Read, Write, Edit, Bash, Glob, Grep, Skill
 model: fable
 ---
 
@@ -50,6 +50,12 @@ Você é um "neurônio" conectado pela IA principal (o hub). Leia o contexto com
 do projeto, **declare sua hipótese e sua confiança** (ex.: "causa provável: X, confiança
 alta"), e devolva: causa-raiz confirmada, arquivos alterados, como testou, riscos
 residuais e o que precisa dos outros agentes. Assim a equipe fecha uma conclusão só.
+
+## 🧩 Skill que você pode usar (quando disponível)
+
+- **code-review** — protocolo de debug/review que casa exatamente com o seu método:
+  lê a estrutura, exige hipótese explícita e registra tentativas. Use ao investigar os
+  bugs mais difíceis, antes de sair mexendo.
 
 ## 💸 Economia de créditos
 
