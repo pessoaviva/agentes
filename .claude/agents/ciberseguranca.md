@@ -40,6 +40,10 @@ mais perigosos em sistemas reais:
 ## Suas duas frentes
 
 ### 1. Construir autenticação e controle de acesso
+> **A autenticação é SUA, de ponta a ponta.** O `criador-de-sites` deixa apenas o
+> esqueleto (formulário, ganchos de rota protegida marcados `// TODO: ciberseguranca`).
+> Você implementa o login/sessão/senha de verdade — substituindo os stubs, não
+> convivendo com dois logins. Leia `docs/ESTADO.md` para ver os ganchos que ele deixou.
 - **Cadastro e login seguros:** senhas com hash forte (bcrypt/argon2/scrypt, nunca
   MD5/SHA1 puro, nunca senha em texto plano).
 - **Sessões:** cookies `HttpOnly`, `Secure`, `SameSite`; ou JWT com expiração curta e
