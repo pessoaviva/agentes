@@ -16,11 +16,13 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 | **corretor-de-bugs** | Vistoria o código e conserta bugs (construção + pós-lançamento) | Fases 1–5 — sob demanda |
 | **/gerente** (comando) | Orquestra tudo em pipeline simultâneo, como uma rede neural | Sempre que quiser conduzir o fluxo completo |
 
-> **Rede neural de pensamento:** a IA principal (Opus 4.8 / Fable 5) é o "córtex/hub" e
+> **Rede neural de pensamento:** a IA principal (Fable 5 / Opus 4.8) é o "córtex/hub" e
 > os agentes são neurônios especializados. Como subagentes não conversam entre si, eles
-> se conectam **através da IA principal** + um contexto compartilhado (o "resumo do
-> projeto"). Cada agente declara suas suposições, sua confiança e o que precisa dos
-> outros; a IA principal sintetiza e converge para uma conclusão só.
+> se conectam **através da IA principal** + um **arquivo de estado compartilhado**
+> (`docs/ESTADO.md`) que o gerente mantém. Todo prompt de agente começa com "leia
+> `docs/ESTADO.md`" e termina devolvendo um relatório no formato padrão (suposições,
+> confiança, arquivos tocados, o que precisa dos outros); a IA principal sintetiza,
+> atualiza o `ESTADO.md` e converge para uma conclusão só.
 
 > **Por que o "gerente" é um comando e não um agente?** No Claude Code, um subagente
 > roda isolado e não consegue dar ordens à IA principal nem chamar outros subagentes —
@@ -74,23 +76,38 @@ projeto"*.
 
 ## O fluxo de trabalho (o que o gerente conduz)
 
+Cada fase tem um **portão** (o "pronto") — o gerente não avança sem ele.
+
 ```
-Fase 1  criador-de-sites  +  designer   (pipeline: cada peça pronta já vai pro próximo)
-        + corretor-de-bugs vistoria e conserta em paralelo
+Fase 0  Levantamento de requisitos → escreve docs/ESTADO.md
+        🚪 portão: resumo confirmado pelo usuário + ESTADO.md criado
            │
            ▼
-Fase 2  testador testa na pele do cliente  →  conserta em lote  →  ✅ checkpoint
+Fase 1  criador-de-sites  +  designer   (pipeline por peça, SEM editar o mesmo arquivo)
+        + corretor-de-bugs vistoria em paralelo
+        🚪 portão: app sobe + smoke test passa
            │
            ▼
-Fase 3  ciberseguranca     (cria login + blinda segurança)
+Fase 2  testador SOBE o app e navega com Playwright (na pele do cliente)
+        → conserta em lote → testador RE-TESTA a correção
+        🚪 portão: veredito "aprovado", sem Bloqueante nem Alto
            │
            ▼
-Fase 4  hacker  →  acha falhas  →  ciberseguranca corrige  →  hacker testa de novo
-        (repete até não sobrar falha crítica/alta)
+Fase 3  ciberseguranca  (cria login de ponta a ponta + blinda OWASP)
+        🚪 portão: auth real + blindagem + build passa
+           │
+           ▼
+Fase 4  hacker SOBE o app e ataca → ciberseguranca corrige em lote → hacker de novo
+        (TETO de 3 rodadas; se sobrar Crítica/Alta, escala ao usuário)
+        🚪 portão: relatório do hacker limpo (ou teto atingido + decisão do usuário)
            │
            ▼
 Fase 5  🐛 App no ar  →  corretor-de-bugs conserta bugs pós-lançamento
-        (reproduz → causa-raiz → menor correção segura → testa regressão)
+        (reproduz → causa-raiz → menor correção segura) → testador valida
+           │
+           ▼
+Fase 6  🚀 Deploy (dono: criador-de-sites) — build, .env.example, hospedagem, CI
+        🚪 portão: build de produção passa + lista do que o cliente precisa configurar
 ```
 
 ## Estrutura do repositório (layout de plugin)
@@ -112,26 +129,37 @@ agentes/
 └── instalar-agentes.sh      # instalação alternativa em ~/.claude
 ```
 
-## Observação sobre o modelo (Fable 5 fixo)
+## Observação sobre o modelo (Fable 5 é o premium)
 
-Os 5 agentes trabalhadores usam `model: fable` — ou seja, rodam com a inteligência do
-**Fable 5 mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo). Assim você
-sempre tem o melhor cérebro nos agentes, sem depender do modelo que abriu.
+**Fable 5 é o modelo mais capaz** — é o cérebro que faz o trabalho generativo e crítico.
+Os agentes que **criam/consertam o produto** vêm fixos em `model: fable`:
+**criador-de-sites, designer, ciberseguranca e corretor-de-bugs**. Eles rodam com a
+inteligência do Fable 5 **mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo).
 
-- **Fallback automático e seguro:** se o Fable 5 não estiver disponível na sua sessão,
-  o Claude Code usa o modelo da sessão em vez de dar erro (o "mais próximo possível").
+Os agentes que só **leem e reportam** (**testador** e **hacker**) vêm em `model: sonnet`
+— dá conta da leitura/varredura e é mais barato. Não é rebaixamento: é usar o motor certo
+para o papel certo (economia real).
+
+- **Fallback automático e seguro:** se o modelo fixado não estiver disponível na sua
+  sessão, o Claude Code usa o modelo da sessão em vez de dar erro (o "mais próximo possível").
 - **O comando `/gerente` (o hub) roda no modelo da sessão** — ele é injetado na IA
   principal e não dá para fixar o modelo dele. Então: abra a sessão em Fable 5 para ter
-  Fable 5 também na orquestração; os 5 agentes já vêm fixos em Fable 5 de qualquer forma.
+  Fable 5 também na orquestração.
 - **Custo:** o Fable 5 consome o limite de uso mais rápido. Se preferir que os agentes
-  sigam o modelo da sessão, troque `model: fable` por `model: inherit` nos arquivos de
-  `agents/`.
+  sigam o modelo da sessão, troque o `model:` por `inherit` nos arquivos de `agents/`.
 
-### Roteador automático (Fable 5 ↔ Opus 4.8)
+### Roteador automático (por papel, não por "força")
 
-O `/gerente` tem um **roteador de modelo e esforço** com 6 modos (baixo, médio, alto,
-extra, máximo, ultracode). Ele usa **Fable 5** como padrão e **sobe para Opus 4.8**
-automaticamente nas tarefas mais difíceis/críticas — escolhendo o modelo em cada chamada
-de agente (isso troca de verdade, por chamada). O nível de esforço (`low`→`max`) é um
-ajuste de sessão; o gerente recomenda o nível certo. Detalhes na tabela dentro do
-`commands/gerente.md`.
+O `/gerente` roteia o **modelo por papel** e o **esforço pela dificuldade** — o que
+economiza de verdade, sem inverter a hierarquia dos modelos:
+
+- **Trivial** (texto, 1 linha, dúvida): a IA principal faz **inline**, sem gastar subagente.
+- **Leitura/varredura** (testador, hacker no recon): **Sonnet 5**.
+- **Construção/conserto** (criador, designer, ciberseguranca, corretor): **Fable 5**.
+- **Crítico** (segurança, dinheiro, dados, bug cabeludo): **Fable 5** com **esforço máximo**.
+- **Ultracode:** Fable 5 + passada de **auto-revisão** (skill `code-review`) antes de entregar.
+- **Opus 4.8:** alternativa premium **lado a lado** do Fable (um segundo cérebro), **não**
+  um degrau acima dele.
+
+O modelo troca de verdade em cada chamada de agente (parâmetro `model` no Task); o esforço
+(`low`→`max`) é ajuste de sessão. Detalhes na tabela dentro do `commands/gerente.md`.

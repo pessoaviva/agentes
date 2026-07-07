@@ -26,6 +26,8 @@ método cirúrgico abaixo.
 
 ## Método (sempre nesta ordem)
 
+0. **Leia `docs/ESTADO.md`** (o que foi combinado, o relatório do testador/hacker com os
+   passos de reprodução, decisões já tomadas). É seu ponto de partida.
 1. **Reproduza primeiro.** Não conserte no escuro. Reproduza o bug com os passos do
    relato. Se não conseguir reproduzir, peça o que falta: mensagem/stack de erro,
    print, passos exatos, navegador/dispositivo, o que mudou recentemente.
@@ -48,6 +50,8 @@ método cirúrgico abaixo.
 - **Bug de segurança → escale** para o agente `ciberseguranca` (não improvise em auth).
 - **Se "o bug" for na verdade uma feature faltando ou um refactor grande**, avise a IA
   principal: isso é trabalho do `criador-de-sites`, não um hotfix.
+- **Você não aprova a própria correção.** Depois de consertar, quem valida o fluxo no
+  navegador é o `testador` (re-teste). Você diz "corrigido, pronto para re-teste".
 
 ## 🧠 Como você pensa em equipe
 

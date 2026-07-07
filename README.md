@@ -2,7 +2,7 @@
 
 Plugin do **Claude Code** com uma equipe de **7 agentes de IA** para criar e manter
 sites e sistemas (simples ou complexos) de ponta a ponta, com a inteligência do modelo
-que você usar (Opus 4.8 / Fable 5).
+que você usar (Fable 5 / Opus 4.8).
 
 ## Os 7 agentes
 
@@ -39,10 +39,17 @@ bash instalar-agentes.sh
 
 ## Fluxo de trabalho
 
+O gerente conduz por fases, cada uma com um **portão** (o "pronto"), e mantém um estado
+compartilhado em `docs/ESTADO.md` (todo agente lê esse arquivo e devolve relatório padrão):
+
 ```
-criador-de-sites + designer  →  testador  →  ciberseguranca  →  hacker  →  🐛 corretor-de-bugs
-   (pipeline: peça pronta        (testa na    (login+blindagem)  (pentest)   (vistoria + manutenção)
-    já vai pro próximo)          pele do cliente)
+requisitos → criador-de-sites + designer → testador → ciberseguranca → hacker → 🐛 correção → 🚀 deploy
+ (ESTADO.md)  (pipeline por peça,          (sobe o app  (login+          (ataca o    (pós-lança-   (build +
+              sem editar o mesmo arquivo)   e navega)    blindagem)       app pronto)  mento)        hospedagem)
 ```
+
+- **testador** e **hacker** sobem o app de verdade e navegam com Playwright (não só leem o código).
+- Laço **hacker ↔ ciberseguranca** tem teto de **3 rodadas**; correções são validadas por quem
+  não as fez (o **testador** re-testa).
 
 Detalhes completos em [`CLAUDE.md`](./CLAUDE.md).
