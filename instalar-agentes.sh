@@ -17,7 +17,7 @@ echo "==> Instalando agentes em: $DEST_AGENTS"
 mkdir -p "$DEST_AGENTS" "$DEST_COMMANDS"
 
 # Copia os 4 agentes trabalhadores
-for agente in criador-de-sites ciberseguranca hacker designer; do
+for agente in criador-de-sites ciberseguranca hacker designer corretor-de-bugs testador; do
   cp "$SCRIPT_DIR/agents/$agente.md" "$DEST_AGENTS/$agente.md"
   echo "    ✓ agente: $agente"
 done

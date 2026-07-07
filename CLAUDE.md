@@ -10,9 +10,17 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 |---|---|---|
 | **criador-de-sites** | Escreve todo o código-fonte (back-end, banco, APIs, lógica) | Fase 1 — construção |
 | **designer** | Cria todo o front-end e o design (nível "Claude design") | Fase 1 — em paralelo |
+| **testador** | Testa tudo na pele do cliente e reporta o que não funciona | Fase 2 — teste de aceitação |
 | **ciberseguranca** | Cria login e blinda a segurança (OWASP) | Fase 3 — depois do sistema pronto |
 | **hacker** | Pentester ético: acha as falhas e reporta | Fase 4 — por último |
-| **/gerente** (comando) | Orquestra tudo na ordem certa | Sempre que quiser conduzir o fluxo completo |
+| **corretor-de-bugs** | Vistoria o código e conserta bugs (construção + pós-lançamento) | Fases 1–5 — sob demanda |
+| **/gerente** (comando) | Orquestra tudo em pipeline simultâneo, como uma rede neural | Sempre que quiser conduzir o fluxo completo |
+
+> **Rede neural de pensamento:** a IA principal (Opus 4.8 / Fable 5) é o "córtex/hub" e
+> os agentes são neurônios especializados. Como subagentes não conversam entre si, eles
+> se conectam **através da IA principal** + um contexto compartilhado (o "resumo do
+> projeto"). Cada agente declara suas suposições, sua confiança e o que precisa dos
+> outros; a IA principal sintetiza e converge para uma conclusão só.
 
 > **Por que o "gerente" é um comando e não um agente?** No Claude Code, um subagente
 > roda isolado e não consegue dar ordens à IA principal nem chamar outros subagentes —
@@ -50,7 +58,7 @@ a pasta `.claude/` **dentro do projeto** — é o que este repositório já traz
 ```
 seu-projeto/
 └── .claude/
-    ├── agents/        # criador-de-sites, designer, ciberseguranca, hacker
+    ├── agents/        # criador-de-sites, designer, testador, ciberseguranca, hacker, corretor-de-bugs
     └── commands/
         └── gerente.md # vira /gerente (sem prefixo, pois não é plugin)
 ```
@@ -67,10 +75,11 @@ projeto"*.
 ## O fluxo de trabalho (o que o gerente conduz)
 
 ```
-Fase 1  criador-de-sites  +  designer   (em paralelo: lógica + visual)
+Fase 1  criador-de-sites  +  designer   (pipeline: cada peça pronta já vai pro próximo)
+        + corretor-de-bugs vistoria e conserta em paralelo
            │
            ▼
-Fase 2  ✅ Sistema pronto  →  checkpoint com o usuário
+Fase 2  testador testa na pele do cliente  →  conserta em lote  →  ✅ checkpoint
            │
            ▼
 Fase 3  ciberseguranca     (cria login + blinda segurança)
@@ -78,6 +87,10 @@ Fase 3  ciberseguranca     (cria login + blinda segurança)
            ▼
 Fase 4  hacker  →  acha falhas  →  ciberseguranca corrige  →  hacker testa de novo
         (repete até não sobrar falha crítica/alta)
+           │
+           ▼
+Fase 5  🐛 App no ar  →  corretor-de-bugs conserta bugs pós-lançamento
+        (reproduz → causa-raiz → menor correção segura → testa regressão)
 ```
 
 ## Estrutura do repositório (layout de plugin)
@@ -87,18 +100,38 @@ agentes/
 ├── .claude-plugin/
 │   ├── plugin.json          # manifesto do plugin
 │   └── marketplace.json     # marketplace que publica este plugin
-├── agents/                  # os 4 agentes trabalhadores
+├── agents/                  # os 6 agentes trabalhadores
 │   ├── criador-de-sites.md
 │   ├── designer.md
+│   ├── testador.md
 │   ├── ciberseguranca.md
-│   └── hacker.md
+│   ├── hacker.md
+│   └── corretor-de-bugs.md
 ├── commands/
 │   └── gerente.md           # o orquestrador (vira /agentes:gerente)
 └── instalar-agentes.sh      # instalação alternativa em ~/.claude
 ```
 
-## Observação sobre o modelo
+## Observação sobre o modelo (Fable 5 fixo)
 
-Os agentes usam `model: inherit` — ou seja, rodam com **o mesmo modelo da sua sessão
-principal**. Se você abrir o Claude Code com Fable 5 (ou Opus 4.8), os agentes herdam
-essa inteligência automaticamente.
+Os 5 agentes trabalhadores usam `model: fable` — ou seja, rodam com a inteligência do
+**Fable 5 mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo). Assim você
+sempre tem o melhor cérebro nos agentes, sem depender do modelo que abriu.
+
+- **Fallback automático e seguro:** se o Fable 5 não estiver disponível na sua sessão,
+  o Claude Code usa o modelo da sessão em vez de dar erro (o "mais próximo possível").
+- **O comando `/gerente` (o hub) roda no modelo da sessão** — ele é injetado na IA
+  principal e não dá para fixar o modelo dele. Então: abra a sessão em Fable 5 para ter
+  Fable 5 também na orquestração; os 5 agentes já vêm fixos em Fable 5 de qualquer forma.
+- **Custo:** o Fable 5 consome o limite de uso mais rápido. Se preferir que os agentes
+  sigam o modelo da sessão, troque `model: fable` por `model: inherit` nos arquivos de
+  `agents/`.
+
+### Roteador automático (Fable 5 ↔ Opus 4.8)
+
+O `/gerente` tem um **roteador de modelo e esforço** com 6 modos (baixo, médio, alto,
+extra, máximo, ultracode). Ele usa **Fable 5** como padrão e **sobe para Opus 4.8**
+automaticamente nas tarefas mais difíceis/críticas — escolhendo o modelo em cada chamada
+de agente (isso troca de verdade, por chamada). O nível de esforço (`low`→`max`) é um
+ajuste de sessão; o gerente recomenda o nível certo. Detalhes na tabela dentro do
+`commands/gerente.md`.
