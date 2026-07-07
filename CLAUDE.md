@@ -10,10 +10,11 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 |---|---|---|
 | **criador-de-sites** | Escreve todo o código-fonte (back-end, banco, APIs, lógica) | Fase 1 — construção |
 | **designer** | Cria todo o front-end e o design (nível "Claude design") | Fase 1 — em paralelo |
+| **testador** | Testa tudo na pele do cliente e reporta o que não funciona | Fase 2 — teste de aceitação |
 | **ciberseguranca** | Cria login e blinda a segurança (OWASP) | Fase 3 — depois do sistema pronto |
 | **hacker** | Pentester ético: acha as falhas e reporta | Fase 4 — por último |
-| **corretor-de-bugs** | Conserta bugs pós-lançamento (manutenção/incidentes) | Fase 5 — app já no ar |
-| **/gerente** (comando) | Orquestra tudo como uma rede neural, na ordem certa | Sempre que quiser conduzir o fluxo completo |
+| **corretor-de-bugs** | Vistoria o código e conserta bugs (construção + pós-lançamento) | Fases 1–5 — sob demanda |
+| **/gerente** (comando) | Orquestra tudo em pipeline simultâneo, como uma rede neural | Sempre que quiser conduzir o fluxo completo |
 
 > **Rede neural de pensamento:** a IA principal (Opus 4.8 / Fable 5) é o "córtex/hub" e
 > os agentes são neurônios especializados. Como subagentes não conversam entre si, eles
@@ -57,7 +58,7 @@ a pasta `.claude/` **dentro do projeto** — é o que este repositório já traz
 ```
 seu-projeto/
 └── .claude/
-    ├── agents/        # criador-de-sites, designer, ciberseguranca, hacker, corretor-de-bugs
+    ├── agents/        # criador-de-sites, designer, testador, ciberseguranca, hacker, corretor-de-bugs
     └── commands/
         └── gerente.md # vira /gerente (sem prefixo, pois não é plugin)
 ```
@@ -74,10 +75,11 @@ projeto"*.
 ## O fluxo de trabalho (o que o gerente conduz)
 
 ```
-Fase 1  criador-de-sites  +  designer   (em paralelo: lógica + visual)
+Fase 1  criador-de-sites  +  designer   (pipeline: cada peça pronta já vai pro próximo)
+        + corretor-de-bugs vistoria e conserta em paralelo
            │
            ▼
-Fase 2  ✅ Sistema pronto  →  checkpoint com o usuário
+Fase 2  testador testa na pele do cliente  →  conserta em lote  →  ✅ checkpoint
            │
            ▼
 Fase 3  ciberseguranca     (cria login + blinda segurança)
@@ -98,9 +100,10 @@ agentes/
 ├── .claude-plugin/
 │   ├── plugin.json          # manifesto do plugin
 │   └── marketplace.json     # marketplace que publica este plugin
-├── agents/                  # os 5 agentes trabalhadores
+├── agents/                  # os 6 agentes trabalhadores
 │   ├── criador-de-sites.md
 │   ├── designer.md
+│   ├── testador.md
 │   ├── ciberseguranca.md
 │   ├── hacker.md
 │   └── corretor-de-bugs.md

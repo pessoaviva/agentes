@@ -8,8 +8,8 @@
     {
       "name": "agentes",
       "source": "./",
-      "description": "Equipe de 6 agentes para criar e manter sites e sistemas: criador-de-sites, designer, ciberseguranca, hacker, corretor-de-bugs e o comando /agentes:gerente que orquestra tudo como uma rede neural.",
-      "version": "1.7.0",
+      "description": "Equipe de 7 agentes para criar e manter sites e sistemas: criador-de-sites, designer, testador, ciberseguranca, hacker, corretor-de-bugs e o comando /agentes:gerente que orquestra tudo em pipeline como uma rede neural.",
+      "version": "1.8.0",
       "category": "development"
     }
   ]

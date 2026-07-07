@@ -1,17 +1,18 @@
 # agentes
 
-Plugin do **Claude Code** com uma equipe de **6 agentes de IA** para criar e manter
+Plugin do **Claude Code** com uma equipe de **7 agentes de IA** para criar e manter
 sites e sistemas (simples ou complexos) de ponta a ponta, com a inteligência do modelo
 que você usar (Opus 4.8 / Fable 5).
 
-## Os 6 agentes
+## Os 7 agentes
 
 1. **criador-de-sites** — escreve todo o código-fonte (lógica, back-end, banco, APIs).
 2. **designer** — cria todo o front-end e o design (nível "Claude design").
-3. **ciberseguranca** — cria o login e blinda a segurança do sistema (OWASP).
-4. **hacker** — pentester ético: tenta quebrar o sistema pronto e reporta as falhas.
-5. **corretor-de-bugs** — conserta bugs pós-lançamento (manutenção/incidentes).
-6. **/gerente** — comando que orquestra tudo como uma rede neural (o "gerente" da equipe).
+3. **testador** — testa tudo na pele do cliente e reporta o que não funciona.
+4. **ciberseguranca** — cria o login e blinda a segurança do sistema (OWASP).
+5. **hacker** — pentester ético: tenta quebrar o sistema pronto e reporta as falhas.
+6. **corretor-de-bugs** — vistoria o código e conserta bugs (construção e pós-lançamento).
+7. **/gerente** — comando que orquestra tudo em pipeline simultâneo (o "gerente" da equipe).
 
 ## Instalar e usar em QUALQUER projeto
 
@@ -39,8 +40,9 @@ bash instalar-agentes.sh
 ## Fluxo de trabalho
 
 ```
-criador-de-sites + designer  →  ✅ sistema pronto  →  ciberseguranca  →  hacker  →  🐛 corretor-de-bugs
-       (lógica + visual em paralelo)                    (login+blindagem)  (pentest)   (manutenção pós-lançamento)
+criador-de-sites + designer  →  testador  →  ciberseguranca  →  hacker  →  🐛 corretor-de-bugs
+   (pipeline: peça pronta        (testa na    (login+blindagem)  (pentest)   (vistoria + manutenção)
+    já vai pro próximo)          pele do cliente)
 ```
 
 Detalhes completos em [`CLAUDE.md`](./CLAUDE.md).
