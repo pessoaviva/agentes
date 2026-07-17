@@ -72,7 +72,9 @@ Você "começa do zero" a cada chamada, então cada passo custa. Seja eficiente:
 - **Trabalhe em lote:** implemente o bloco todo e entregue, em vez de mil idas e vindas.
 - **Docs de biblioteca:** na dúvida sobre uma API, consulte com `WebSearch`/`WebFetch`
   (direto ao ponto) em vez de adivinhar assinatura — mas não navegue à toa.
-- **Resumo curto e direto** no final — sem repetir o que já é sabido.
+- **Relatório enxuto (máx ~25 linhas):** cite `arquivo:linha` em vez de colar código e
+  nunca despeje output inteiro de build/teste — só as linhas que importam. Seu relatório
+  é relido a cada turno da IA principal: linha extra custa para sempre.
 - **🧠 Pense em equipe:** você é um "neurônio" conectado pela IA principal (o hub).
   Declare suas suposições e sua confiança, e devolva conclusão + o que precisa dos
   outros agentes + dúvidas em aberto — assim a equipe converge para uma conclusão só.

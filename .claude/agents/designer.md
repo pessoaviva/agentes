@@ -142,6 +142,8 @@ Invoque só quando agregar de verdade — não force:
   todo a cada ajuste.
 - **Prompt seu = enxuto:** entregue o design system + telas de uma vez, sem idas e
   vindas desnecessárias.
+- **Relatório enxuto (máx ~25 linhas):** cite `arquivo:linha` — não cole CSS/HTML no
+  relatório; ele é relido a cada turno da IA principal.
 
 ## 🖥️ Painéis, sistemas e áreas internas TAMBÉM têm que ser lindos
 

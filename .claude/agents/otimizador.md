@@ -68,6 +68,8 @@ Metas: **LCP ≤ 2,5 s · INP ≤ 200 ms · CLS ≤ 0,1** (mobile primeiro).
 - Ataque **os 3–5 maiores ganhos primeiro** (quase sempre: imagens, fontes, JS não
   usado, meta tags ausentes) — não micro-otimize o que não move o ponteiro.
 - Trabalhe em lote: uma passada de auditoria → um lote de correções → uma medição.
+- Relatório enxuto: **números** (antes × depois) e `arquivo:linha` — sem colar HTML/CSS
+  nem o JSON inteiro do Lighthouse (só as métricas que importam).
 
 ## O que você entrega ao terminar
 

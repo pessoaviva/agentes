@@ -107,6 +107,12 @@ entre os neurônios:
 Para **testador** e **hacker**, cada achado leva severidade (formato nos arquivos deles):
 `[SEVERIDADE] · O quê · Onde · Evidência (screenshot) · Passos · Encaminhar para`.
 
+**Teto do relatório: ~25 linhas (+ lista de achados, quando houver).** O relatório volta
+para a SUA janela e vai para o `ESTADO.md` — cada linha dele é relida a cada turno dali
+em diante. Exija no prompt de todo agente: citar `arquivo:linha` em vez de colar código;
+nunca despejar output inteiro de comando (só as linhas que importam); o detalhe fica no
+código e em `docs/relatorios/`.
+
 ## 🎚️ Roteador de modelo e esforço (Fable 5 é o PREMIUM)
 
 Você escolhe o "motor" de cada tarefa. **Fable 5 é o modelo mais capaz** — reserve-o para
@@ -121,6 +127,7 @@ Ao acionar um agente (Task), **defina o parâmetro `model`** conforme o papel:
 |---|---|---|---|
 | **Trivial (inline)** | — (você mesmo) | texto, renomear, ajuste de 1 linha, dúvida simples: **não dispare subagente** | baixo |
 | **Leitura/varredura** | **Sonnet 5** | **testador**, **hacker (recon)**, **revisor-de-codigo** e **documentador** — leem e reportam/explicam, não geram o produto | baixo/médio |
+| **Mecânico** | **Haiku 4.5** | tarefa isolável e sem julgamento: rodar build/testes e dizer se passou, conversão simples, conferência de lista (~80% mais barato que Sonnet) | baixo |
 | **Construção padrão** | **Fable 5** | **criador-de-sites, designer, ciberseguranca, corretor-de-bugs, otimizador** no dia a dia (feature, design system, blindagem, hotfix, otimização) | médio/alto |
 | **Crítico** | **Fable 5** | segurança crítica, dinheiro/dados sensíveis, arquitetura difícil, bug cabeludo de produção | máximo |
 | **Ultracode** | **Fable 5** + auto-revisão | o código mais difícil: o agente escreve, **revisa a própria saída** (skill `code-review`) e testa com rigor extra; nos pontos mais críticos, some o **revisor-de-codigo** (Sonnet) como segundo olhar independente | máximo |
@@ -130,6 +137,8 @@ Ao acionar um agente (Task), **defina o parâmetro `model`** conforme o papel:
 - Tarefa trivial ou muito dependente do contexto desta conversa → **faça você, inline** (custo zero de subagente).
 - Papel de **ler e reportar/explicar** (testador, hacker no recon, revisor-de-codigo,
   documentador) → **Sonnet 5** (dá conta e é mais barato).
+- Tarefa **mecânica e isolável** (rodar build/testes e dizer se passou, conversão simples,
+  conferência de lista) → **Haiku 4.5** (`model: haiku` no Task, ~80% mais barato).
 - Papel de **criar/consertar o produto** (criador, designer, ciberseguranca, corretor,
   otimizador) → **Fable 5**.
 - Quanto maior o risco (segurança, dinheiro, dados) → suba o **esforço**, não troque para um modelo "mais forte" que o Fable (não há).
@@ -141,18 +150,28 @@ Ao acionar um agente (Task), **defina o parâmetro `model`** conforme o papel:
 > linha, qual modo está usando e por quê (ex.: "hacker em Sonnet 5, é varredura; criador em
 > Fable 5, é a lógica de pagamento").
 
-## Como dividir o trabalho — e ECONOMIZAR CRÉDITOS
+## Como dividir o trabalho — e ECONOMIZAR TOKENS (o custo é MULTIPLICATIVO)
 
-Cada subagente **começa do zero** e relê arquivos para se situar — isso custa. Divida com cabeça:
+O modelo relê o histórico INTEIRO a cada turno — cada linha que entra na sua janela é
+paga de novo em todos os turnos seguintes. Regra nº 1: **o trabalho pesado acontece
+DENTRO do subagente; na sua janela só entram briefing e relatório enxuto.** (Um subagente
+pode queimar 100k+ tokens internamente lendo e testando, e custar ~10k na janela
+principal — é esse isolamento que barateia o projeto.)
 
 - **Você (IA principal) faz a parte leve e de contexto:** arquitetura, quebrar em tarefas,
   integração, ajustes pequenos, manter o `docs/ESTADO.md` e falar com o usuário. Inline.
 - **Delegue só blocos grandes, focados e independentes:** "construa todo o back-end de
-  agendamento", "estilize todas as telas com o design system", "faça a varredura de segurança".
-- **Briefing preciso + caminhos dos arquivos** no prompt, para o agente não procurar no escuro.
+  agendamento", "estilize todas as telas com o design system", "faça a varredura de
+  segurança". **Tarefa pequena em subagente é desperdício** (overhead de partida) — inline.
+- **Briefing = objetivo + caminhos, nunca conteúdo:** passe `arquivo:linha` e deixe o
+  agente ler na janela DELE. Colar arquivo no prompt paga o arquivo duas vezes.
+- **Leitura pesada NUNCA na sua janela:** precisa entender 20 arquivos ou um log gigante?
+  Subagente de leitura (Sonnet/Haiku) — para você volta só a conclusão.
 - **Rode em paralelo** o que é independente (mesma leva de Tasks) — mas **nunca dois agentes
   no mesmo arquivo** (ver pipeline).
 - **Reaproveite o `docs/ESTADO.md`** como contexto único — nunca re-explique o projeto inteiro.
+- **Ao receber um relatório, NÃO o repita no chat:** resuma em 1–2 linhas para o usuário e
+  registre no `ESTADO.md`. Repetir relatório = pagá-lo de novo a cada turno até o fim.
 
 ## 🔄 Pipeline por peça — SEM edição concorrente no mesmo arquivo
 
@@ -271,6 +290,18 @@ Com o app no ar, o trabalho vira manutenção. Quando o usuário reportar um bug
 - **O testador re-testa e valida** a correção no navegador (o corretor não aprova a própria).
 - Bug de segurança → o corretor escala para a `ciberseguranca`; "bug" que é feature nova →
   volta para o `criador-de-sites`.
+
+## 🧹 Portão fechado = ponto seguro de limpar o contexto
+
+O `docs/ESTADO.md` é memória EXTERNA: tudo que importa mora nele (e em `docs/relatorios/`),
+não no histórico do chat. Logo, **todo portão de fase é um ponto seguro de reset**:
+
+- Ao fechar um portão, avise em 1 linha: *"Portão da Fase N fechado e registrado no
+  ESTADO.md — ponto seguro para `/clear` (ou `/compact`); depois rode `/status` que eu
+  retomo daqui."* Projeto longo com janela sempre pequena é o maior corte de custo que existe.
+- Sugira `/compact` quando notar o contexto pesado (o usuário confere em `/context`, por
+  volta de 50% já vale) — compactar cedo preserva o raciocínio; esperar os 95% degrada.
+- Depois de um `/clear`, o `/status` re-hidrata o essencial em segundos lendo o `ESTADO.md`.
 
 ## Regras de condução
 

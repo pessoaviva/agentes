@@ -178,6 +178,7 @@ O `/gerente` roteia o **modelo por papel** e o **esforço pela dificuldade** —
 economiza de verdade, sem inverter a hierarquia dos modelos:
 
 - **Trivial** (texto, 1 linha, dúvida): a IA principal faz **inline**, sem gastar subagente.
+- **Mecânico** (rodar build/teste e dizer se passou, conversão, conferência): **Haiku 4.5** (~80% mais barato).
 - **Leitura/varredura** (testador, hacker no recon, revisor-de-codigo, documentador): **Sonnet 5**.
 - **Construção/conserto** (criador, designer, ciberseguranca, corretor, otimizador): **Fable 5**.
 - **Crítico** (segurança, dinheiro, dados, bug cabeludo): **Fable 5** com **esforço máximo**.
@@ -187,3 +188,28 @@ economiza de verdade, sem inverter a hierarquia dos modelos:
 
 O modelo troca de verdade em cada chamada de agente (parâmetro `model` no Task); o esforço
 (`low`→`max`) é ajuste de sessão. Detalhes na tabela dentro do `commands/gerente.md`.
+
+## 💸 Economia de tokens (o custo é MULTIPLICATIVO)
+
+O modelo relê o histórico inteiro a cada turno — cada linha no contexto é paga de novo em
+todos os turnos seguintes. O time já foi desenhado para isso: trabalho pesado acontece
+**dentro** dos subagentes (na janela principal só entram briefing e relatório), relatórios
+têm **teto de ~25 linhas** com `arquivo:linha` em vez de código colado, e o `ESTADO.md` é
+memória externa enxuta. Do seu lado (o usuário):
+
+- **`/clear` nos portões de fase** — o gerente avisa quando é seguro: o `ESTADO.md` guarda
+  tudo e o `/status` re-hidrata em segundos. Maior ganho em projeto longo: janela sempre
+  pequena em vez de arrastar 100k+ de histórico.
+- **`/compact` cedo** (~50% do contexto; veja em `/context`) — não espere o aviso dos 95%.
+  Acompanhe o gasto com `/usage`.
+- **Agrupe pedidos** num prompt só; se errar, **edite a mensagem** em vez de mandar
+  correção (senão erro + correção ficam no histórico para sempre).
+- **Desconecte MCPs que não vai usar** (`/mcp`) — servidor conectado pode custar milhares
+  de tokens por mensagem mesmo parado.
+- **Pausas longas esfriam o cache de prompt** (~5 min no padrão) — trabalhe em blocos
+  contínuos; voltar horas depois reprocessa o histórico inteiro no preço cheio.
+- **Modo econômico:** sessão em **Sonnet** — os agentes de construção continuam fixos em
+  **Fable 5** e o mecânico vai para **Haiku**. E o CLAUDE.md do projeto do cliente deve
+  ficar enxuto (< 200 linhas): ele entra em TODA mensagem.
+- **Opcional (ferramenta externa):** [RTK](https://github.com/rtk-ai/rtk) comprime output
+  de comandos (git/testes/grep) em 60–90% antes de entrar no contexto (`rtk init --global`).

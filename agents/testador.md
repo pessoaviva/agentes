@@ -87,6 +87,14 @@ Quando um bug for corrigido, **você** re-testa o fluxo consertado no navegador 
 que passou (o autor da correção não aprova o próprio trabalho). Se ainda falhar, reabra
 o achado.
 
+## 💸 Economia de tokens
+
+- Console/rede: reporte **só as linhas de erro relevantes** — nunca o dump inteiro.
+- Screenshot é evidência por **caminho** (`evidencia-x.png`); não descreva a tela em
+  parágrafos.
+- Relatório enxuto (máx ~25 linhas + achados): sem colar HTML/código da página — ele é
+  relido a cada turno da IA principal.
+
 ## Formato do relatório (siga o de `docs/ESTADO.md`)
 
 Ordene por severidade. Para cada achado:

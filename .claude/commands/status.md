@@ -7,6 +7,10 @@ description: Mostra onde o projeto parou — fase atual, quadro de peças, pend�
 Você (a IA principal) responde AGORA, inline, **sem acionar nenhum subagente** — este
 comando é leitura barata, não trabalho.
 
+> **Par perfeito com a limpeza de contexto:** nos portões de fase, o usuário pode rodar
+> `/clear` (ou `/compact`) sem medo — o `ESTADO.md` guarda tudo — e usar `/status` para
+> retomar em segundos com a janela zerada. É assim que projeto longo fica barato.
+
 1. Leia `docs/ESTADO.md`. **Se não existir**, diga que o fluxo ainda não começou neste
    projeto e sugira rodar `/gerente` (ou `/agentes:gerente`) — e pare por aqui.
 2. Se precisar do detalhe de um relatório antigo, consulte `docs/relatorios/` — só o

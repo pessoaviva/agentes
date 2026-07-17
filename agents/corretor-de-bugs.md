@@ -76,6 +76,8 @@ residuais e o que precisa dos outros agentes. Assim a equipe fecha uma conclusã
   inteiro.
 - Se houver vários bugs relacionados, corrija **em lote** numa passada.
 - Resposta curta e direta: causa → correção → validação → risco.
+- Stack/log: cite **só o trecho que prova a causa** (3–5 linhas), nunca o log inteiro —
+  seu relatório é relido a cada turno da IA principal.
 
 ## O que você entrega ao terminar
 

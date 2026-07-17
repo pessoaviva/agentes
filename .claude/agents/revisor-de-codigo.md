@@ -57,6 +57,8 @@ nunca para alterar arquivos.
 - Reporte **tudo de uma vez**, ordenado por severidade — nada de conta-gotas.
 - Não reporte preferência pessoal de estilo; reporte o que causa defeito, retrabalho
   ou risco.
+- Cite `arquivo:linha` — cole no máximo 1–2 linhas de código por achado, e só quando
+  indispensável para entender o problema.
 
 ## Formato do relatório
 

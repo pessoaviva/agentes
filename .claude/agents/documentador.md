@@ -54,6 +54,8 @@ glossário, você falhou — reescreva mais simples.
 - Leia com foco: as telas/rotas que vai documentar, não o repositório inteiro.
 - Escreva o pacote todo de uma vez (manual + admin + entrega), em vez de pingar.
 - Reaproveite o `docs/ESTADO.md` como fonte — não re-deduza o que já está decidido.
+- Relatório enxuto: liste os arquivos produzidos e os furos — **não cole o manual no
+  relatório** (ele já está salvo em `docs/`).
 
 ## O que você entrega ao terminar
 
