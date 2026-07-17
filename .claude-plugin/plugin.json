@@ -1,7 +1,7 @@
 {
   "name": "agentes",
-  "description": "Equipe de 7 agentes para criar e manter sites e sistemas de ponta a ponta: criador-de-sites (codigo), designer (front-end), testador (QA na pele do cliente), ciberseguranca (login e blindagem OWASP), hacker (pentest etico), corretor-de-bugs (vistoria e manutencao) e o comando /agentes:gerente que orquestra tudo em pipeline como uma rede neural.",
-  "version": "2.0.0",
+  "description": "Equipe de 6 agentes + 1 comando para criar e manter sites e sistemas de ponta a ponta: criador-de-sites (codigo), designer (front-end), testador (QA na pele do cliente), ciberseguranca (login e blindagem OWASP), hacker (pentest etico), corretor-de-bugs (vistoria e manutencao) e o comando /agentes:gerente que orquestra tudo em pipeline como uma rede neural.",
+  "version": "2.1.0",
   "author": {
     "name": "pessoaviva"
   }

@@ -16,10 +16,10 @@ DEST_COMMANDS="$HOME/.claude/commands"
 echo "==> Instalando agentes em: $DEST_AGENTS"
 mkdir -p "$DEST_AGENTS" "$DEST_COMMANDS"
 
-# Copia os 6 agentes trabalhadores
-for agente in criador-de-sites ciberseguranca hacker designer corretor-de-bugs testador; do
-  cp "$SCRIPT_DIR/agents/$agente.md" "$DEST_AGENTS/$agente.md"
-  echo "    ✓ agente: $agente"
+# Copia todos os agentes trabalhadores (glob: um agente novo/renomeado entra sozinho)
+for arquivo in "$SCRIPT_DIR"/agents/*.md; do
+  cp "$arquivo" "$DEST_AGENTS/$(basename "$arquivo")"
+  echo "    ✓ agente: $(basename "$arquivo" .md)"
 done
 
 # Copia o comando /gerente (o orquestrador)

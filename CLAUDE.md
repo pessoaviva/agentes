@@ -13,7 +13,7 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 | **testador** | Testa tudo na pele do cliente e reporta o que não funciona | Fase 2 — teste de aceitação |
 | **ciberseguranca** | Cria login e blinda a segurança (OWASP) | Fase 3 — depois do sistema pronto |
 | **hacker** | Pentester ético: acha as falhas e reporta | Fase 4 — por último |
-| **corretor-de-bugs** | Vistoria o código e conserta bugs (construção + pós-lançamento) | Fases 1–5 — sob demanda |
+| **corretor-de-bugs** | Vistoria o código e conserta bugs (construção + pós-lançamento) | Fases 1–6 — sob demanda |
 | **/gerente** (comando) | Orquestra tudo em pipeline simultâneo, como uma rede neural | Sempre que quiser conduzir o fluxo completo |
 
 > **Rede neural de pensamento:** a IA principal (Fable 5 / Opus 4.8) é o "córtex/hub" e
@@ -94,7 +94,8 @@ Fase 2  testador SOBE o app e navega com Playwright (na pele do cliente)
            │
            ▼
 Fase 3  ciberseguranca  (cria login de ponta a ponta + blinda OWASP)
-        🚪 portão: auth real + blindagem + build passa
+        → testador valida o fluxo de login REAL (que era stub na Fase 2)
+        🚪 portão: auth real + blindagem + build passa + login validado
            │
            ▼
 Fase 4  hacker SOBE o app e ataca → ciberseguranca corrige em lote → hacker de novo
@@ -102,22 +103,25 @@ Fase 4  hacker SOBE o app e ataca → ciberseguranca corrige em lote → hacker 
         🚪 portão: relatório do hacker limpo (ou teto atingido + decisão do usuário)
            │
            ▼
-Fase 5  🐛 App no ar  →  corretor-de-bugs conserta bugs pós-lançamento
-        (reproduz → causa-raiz → menor correção segura) → testador valida
+Fase 5  🚀 Deploy (dono: criador-de-sites) — build, .env.example, hospedagem, CI
+        🚪 portão: build de produção passa + lista do que o cliente precisa configurar
            │
            ▼
-Fase 6  🚀 Deploy (dono: criador-de-sites) — build, .env.example, hospedagem, CI
-        🚪 portão: build de produção passa + lista do que o cliente precisa configurar
+Fase 6  🐛 App no ar (fase contínua) → corretor-de-bugs conserta bugs pós-lançamento
+        (reproduz → causa-raiz → menor correção segura) → testador valida
 ```
 
 ## Estrutura do repositório (layout de plugin)
 
 ```
 agentes/
+├── .claude/                 # cópia p/ a Forma 3 (projeto/nuvem) — gerada por sincronizar.sh
+│   ├── agents/
+│   └── commands/
 ├── .claude-plugin/
 │   ├── plugin.json          # manifesto do plugin
 │   └── marketplace.json     # marketplace que publica este plugin
-├── agents/                  # os 6 agentes trabalhadores
+├── agents/                  # os 6 agentes trabalhadores (FONTE CANÔNICA — edite aqui)
 │   ├── criador-de-sites.md
 │   ├── designer.md
 │   ├── testador.md
@@ -126,8 +130,17 @@ agentes/
 │   └── corretor-de-bugs.md
 ├── commands/
 │   └── gerente.md           # o orquestrador (vira /agentes:gerente)
-└── instalar-agentes.sh      # instalação alternativa em ~/.claude
+├── instalar-agentes.sh      # instalação alternativa em ~/.claude
+└── sincronizar.sh           # replica agents/ e commands/ para .claude/
 ```
+
+### Manutenção (ao alterar qualquer agente ou o gerente)
+
+1. Edite SEMPRE em `agents/` e `commands/` — são a fonte canônica.
+2. Rode `bash sincronizar.sh` para replicar em `.claude/` (senão a Forma 3 fica defasada
+   e as duas cópias divergem).
+3. Suba a `version` em `.claude-plugin/plugin.json` **e** `marketplace.json` — sem isso,
+   `/plugin marketplace update pessoaviva` não enxerga a mudança.
 
 ## Observação sobre o modelo (Fable 5 é o premium)
 
