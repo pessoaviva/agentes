@@ -16,20 +16,23 @@ DEST_COMMANDS="$HOME/.claude/commands"
 echo "==> Instalando agentes em: $DEST_AGENTS"
 mkdir -p "$DEST_AGENTS" "$DEST_COMMANDS"
 
-# Copia os 6 agentes trabalhadores
-for agente in criador-de-sites ciberseguranca hacker designer corretor-de-bugs testador; do
-  cp "$SCRIPT_DIR/agents/$agente.md" "$DEST_AGENTS/$agente.md"
-  echo "    ✓ agente: $agente"
+# Copia todos os agentes trabalhadores (glob: um agente novo/renomeado entra sozinho)
+for arquivo in "$SCRIPT_DIR"/agents/*.md; do
+  cp "$arquivo" "$DEST_AGENTS/$(basename "$arquivo")"
+  echo "    ✓ agente: $(basename "$arquivo" .md)"
 done
 
-# Copia o comando /gerente (o orquestrador)
-cp "$SCRIPT_DIR/commands/gerente.md" "$DEST_COMMANDS/gerente.md"
-echo "    ✓ comando: /gerente"
+# Copia todos os comandos (/gerente, /status, ...)
+for arquivo in "$SCRIPT_DIR"/commands/*.md; do
+  cp "$arquivo" "$DEST_COMMANDS/$(basename "$arquivo")"
+  echo "    ✓ comando: /$(basename "$arquivo" .md)"
+done
 
 echo ""
 echo "==> Pronto! Os agentes agora funcionam em qualquer pasta."
 echo "    Abra o Claude Code em qualquer projeto e use:"
 echo "      /gerente                          (conduz o fluxo completo)"
+echo "      /status                           (onde o projeto parou)"
 echo "      \"use o agente criador-de-sites\"   (aciona um agente específico)"
 echo ""
 echo "    Para conferir: rode /agents dentro do Claude Code."

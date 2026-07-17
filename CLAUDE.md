@@ -13,8 +13,12 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 | **testador** | Testa tudo na pele do cliente e reporta o que não funciona | Fase 2 — teste de aceitação |
 | **ciberseguranca** | Cria login e blinda a segurança (OWASP) | Fase 3 — depois do sistema pronto |
 | **hacker** | Pentester ético: acha as falhas e reporta | Fase 4 — por último |
-| **corretor-de-bugs** | Vistoria o código e conserta bugs (construção + pós-lançamento) | Fases 1–5 — sob demanda |
+| **corretor-de-bugs** | Vistoria o código e conserta bugs (construção + pós-lançamento) | Fases 1–6 — sob demanda |
+| **revisor-de-codigo** | Segundo olhar independente no código crítico (aponta, não conserta) | Fases 1–6 — sob demanda |
+| **otimizador** | SEO técnico + performance (Core Web Vitals), sem mudar visual/lógica | Fase 5 — antes do build final |
+| **documentador** | Manual do cliente, guia de administração e README de entrega | Fase 5 — junto do deploy |
 | **/gerente** (comando) | Orquestra tudo em pipeline simultâneo, como uma rede neural | Sempre que quiser conduzir o fluxo completo |
+| **/status** (comando) | Mostra onde o projeto parou (fase, peças, pendências), lendo o ESTADO.md | Qualquer momento — retomar sessão |
 
 > **Rede neural de pensamento:** a IA principal (Fable 5 / Opus 4.8) é o "córtex/hub" e
 > os agentes são neurônios especializados. Como subagentes não conversam entre si, eles
@@ -60,9 +64,10 @@ a pasta `.claude/` **dentro do projeto** — é o que este repositório já traz
 ```
 seu-projeto/
 └── .claude/
-    ├── agents/        # criador-de-sites, designer, testador, ciberseguranca, hacker, corretor-de-bugs
+    ├── agents/        # os 9 agentes da equipe (criador-de-sites, designer, testador, ...)
     └── commands/
-        └── gerente.md # vira /gerente (sem prefixo, pois não é plugin)
+        ├── gerente.md # vira /gerente (sem prefixo, pois não é plugin)
+        └── status.md  # vira /status
 ```
 
 Basta copiar a pasta `.claude/` deste repositório para dentro do projeto do cliente,
@@ -94,7 +99,8 @@ Fase 2  testador SOBE o app e navega com Playwright (na pele do cliente)
            │
            ▼
 Fase 3  ciberseguranca  (cria login de ponta a ponta + blinda OWASP)
-        🚪 portão: auth real + blindagem + build passa
+        → testador valida o fluxo de login REAL (que era stub na Fase 2)
+        🚪 portão: auth real + blindagem + build passa + login validado
            │
            ▼
 Fase 4  hacker SOBE o app e ataca → ciberseguranca corrige em lote → hacker de novo
@@ -102,42 +108,60 @@ Fase 4  hacker SOBE o app e ataca → ciberseguranca corrige em lote → hacker 
         🚪 portão: relatório do hacker limpo (ou teto atingido + decisão do usuário)
            │
            ▼
-Fase 5  🐛 App no ar  →  corretor-de-bugs conserta bugs pós-lançamento
-        (reproduz → causa-raiz → menor correção segura) → testador valida
+Fase 5  🚀 Deploy (dono: criador-de-sites) — build, .env.example, hospedagem, CI
+        + otimizador (SEO/performance) + documentador (manual do cliente) em paralelo
+        🚪 portão: build passa + auditoria sem item grave + manual entregue + lista do cliente
            │
            ▼
-Fase 6  🚀 Deploy (dono: criador-de-sites) — build, .env.example, hospedagem, CI
-        🚪 portão: build de produção passa + lista do que o cliente precisa configurar
+Fase 6  🐛 App no ar (fase contínua) → corretor-de-bugs conserta bugs pós-lançamento
+        (reproduz → causa-raiz → menor correção segura) → testador valida
 ```
 
 ## Estrutura do repositório (layout de plugin)
 
 ```
 agentes/
+├── .claude/                 # cópia p/ a Forma 3 (projeto/nuvem) — gerada por sincronizar.sh
+│   ├── agents/
+│   └── commands/
 ├── .claude-plugin/
 │   ├── plugin.json          # manifesto do plugin
 │   └── marketplace.json     # marketplace que publica este plugin
-├── agents/                  # os 6 agentes trabalhadores
+├── agents/                  # os 9 agentes trabalhadores (FONTE CANÔNICA — edite aqui)
 │   ├── criador-de-sites.md
 │   ├── designer.md
 │   ├── testador.md
 │   ├── ciberseguranca.md
 │   ├── hacker.md
-│   └── corretor-de-bugs.md
+│   ├── corretor-de-bugs.md
+│   ├── revisor-de-codigo.md
+│   ├── otimizador.md
+│   └── documentador.md
 ├── commands/
-│   └── gerente.md           # o orquestrador (vira /agentes:gerente)
-└── instalar-agentes.sh      # instalação alternativa em ~/.claude
+│   ├── gerente.md           # o orquestrador (vira /agentes:gerente)
+│   └── status.md            # /status — onde o projeto parou (lê o ESTADO.md)
+├── instalar-agentes.sh      # instalação alternativa em ~/.claude
+└── sincronizar.sh           # replica agents/ e commands/ para .claude/
 ```
+
+### Manutenção (ao alterar qualquer agente ou o gerente)
+
+1. Edite SEMPRE em `agents/` e `commands/` — são a fonte canônica.
+2. Rode `bash sincronizar.sh` para replicar em `.claude/` (senão a Forma 3 fica defasada
+   e as duas cópias divergem).
+3. Suba a `version` em `.claude-plugin/plugin.json` **e** `marketplace.json` — sem isso,
+   `/plugin marketplace update pessoaviva` não enxerga a mudança.
 
 ## Observação sobre o modelo (Fable 5 é o premium)
 
 **Fable 5 é o modelo mais capaz** — é o cérebro que faz o trabalho generativo e crítico.
 Os agentes que **criam/consertam o produto** vêm fixos em `model: fable`:
-**criador-de-sites, designer, ciberseguranca e corretor-de-bugs**. Eles rodam com a
-inteligência do Fable 5 **mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo).
+**criador-de-sites, designer, ciberseguranca, corretor-de-bugs e otimizador**. Eles rodam
+com a inteligência do Fable 5 **mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo).
 
-Os agentes que só **leem e reportam** (**testador** e **hacker**) vêm em `model: sonnet`
-— dá conta da leitura/varredura e é mais barato. Não é rebaixamento: é usar o motor certo
+Os agentes que só **leem e reportam/explicam** (**testador**, **hacker**,
+**revisor-de-codigo** e **documentador**) vêm em `model: sonnet` — dá conta da
+leitura/varredura/redação e é mais barato. Não é rebaixamento: é usar o motor certo
 para o papel certo (economia real).
 
 - **Fallback automático e seguro:** se o modelo fixado não estiver disponível na sua
@@ -154,8 +178,9 @@ O `/gerente` roteia o **modelo por papel** e o **esforço pela dificuldade** —
 economiza de verdade, sem inverter a hierarquia dos modelos:
 
 - **Trivial** (texto, 1 linha, dúvida): a IA principal faz **inline**, sem gastar subagente.
-- **Leitura/varredura** (testador, hacker no recon): **Sonnet 5**.
-- **Construção/conserto** (criador, designer, ciberseguranca, corretor): **Fable 5**.
+- **Mecânico** (rodar build/teste e dizer se passou, conversão, conferência): **Haiku 4.5** (~80% mais barato).
+- **Leitura/varredura** (testador, hacker no recon, revisor-de-codigo, documentador): **Sonnet 5**.
+- **Construção/conserto** (criador, designer, ciberseguranca, corretor, otimizador): **Fable 5**.
 - **Crítico** (segurança, dinheiro, dados, bug cabeludo): **Fable 5** com **esforço máximo**.
 - **Ultracode:** Fable 5 + passada de **auto-revisão** (skill `code-review`) antes de entregar.
 - **Opus 4.8:** alternativa premium **lado a lado** do Fable (um segundo cérebro), **não**
@@ -163,3 +188,34 @@ economiza de verdade, sem inverter a hierarquia dos modelos:
 
 O modelo troca de verdade em cada chamada de agente (parâmetro `model` no Task); o esforço
 (`low`→`max`) é ajuste de sessão. Detalhes na tabela dentro do `commands/gerente.md`.
+
+## 💸 Economia de tokens (o custo é MULTIPLICATIVO)
+
+O modelo relê o histórico inteiro a cada turno — cada linha no contexto é paga de novo em
+todos os turnos seguintes. O time já foi desenhado para isso: trabalho pesado acontece
+**dentro** dos subagentes (na janela principal só entram briefing e relatório), relatórios
+têm **teto de ~25 linhas** com `arquivo:linha` em vez de código colado, e o `ESTADO.md` é
+memória externa enxuta. Do seu lado (o usuário):
+
+- **`/clear` nos portões de fase** — o gerente avisa quando é seguro: o `ESTADO.md` guarda
+  tudo e o `/status` re-hidrata em segundos. Maior ganho em projeto longo: janela sempre
+  pequena em vez de arrastar 100k+ de histórico.
+- **`/compact` cedo** (~50% do contexto; veja em `/context`) — não espere o aviso dos 95%.
+  Acompanhe o gasto com `/usage`.
+- **Agrupe pedidos** num prompt só; se errar, **edite a mensagem** em vez de mandar
+  correção (senão erro + correção ficam no histórico para sempre).
+- **Desconecte MCPs que não vai usar** (`/mcp`) — servidor conectado pode custar milhares
+  de tokens por mensagem mesmo parado.
+- **Cache de prompt paga ~10% na releitura do que não mudou** — mantenha o prefixo
+  estável: não troque CLAUDE.md/memória nem conecte/desconecte MCP no meio da sessão
+  (invalida o cache dali em diante). Pausas longas esfriam o cache (~5 min no padrão) —
+  trabalhe em blocos contínuos.
+- **Contexto blindado no projeto do cliente:** o gerente cria `.claude/settings.json`
+  com deny de leitura (node_modules, dist, locks, .env) — contexto inicial até ~90%
+  menor e ninguém lê segredo por engano. (Não existe `.claudeignore` nativo; o
+  equivalente oficial são as regras `permissions.deny` — foi o que usamos.)
+- **Modo econômico:** sessão em **Sonnet** — os agentes de construção continuam fixos em
+  **Fable 5** e o mecânico vai para **Haiku**. E o CLAUDE.md do projeto do cliente deve
+  ficar enxuto (< 200 linhas): ele entra em TODA mensagem.
+- **Opcional (ferramenta externa):** [RTK](https://github.com/rtk-ai/rtk) comprime output
+  de comandos (git/testes/grep) em 60–90% antes de entrar no contexto (`rtk init --global`).
