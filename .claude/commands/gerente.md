@@ -139,6 +139,9 @@ Ao acionar um agente (Task), **defina o parâmetro `model`** conforme o papel:
   documentador) → **Sonnet 5** (dá conta e é mais barato).
 - Tarefa **mecânica e isolável** (rodar build/testes e dizer se passou, conversão simples,
   conferência de lista) → **Haiku 4.5** (`model: haiku` no Task, ~80% mais barato).
+- Peça de construção **simples e sem lógica** (página estática, seção de texto, ajuste
+  visual pequeno) → pode descer para **Sonnet 5** na chamada (`model: sonnet` sobrepõe o
+  fixado) — reserve o Fable para lógica e arquitetura de verdade.
 - Papel de **criar/consertar o produto** (criador, designer, ciberseguranca, corretor,
   otimizador) → **Fable 5**.
 - Quanto maior o risco (segurança, dinheiro, dados) → suba o **esforço**, não troque para um modelo "mais forte" que o Fable (não há).
@@ -220,6 +223,17 @@ assuma escolhas sensatas do ramo e **liste no ESTADO.md o que assumiu**.
 ### Fase 1 — Construção (pipeline: criador + designer)
 
 - Crie/atualize `docs/ESTADO.md`. Dispare a construção em pipeline por peça (regras acima).
+- **Blinde o contexto (1x, logo no início):** crie `.claude/settings.json` no projeto com
+  deny de leitura para pastas pesadas e segredos — nenhum agente queima tokens lendo lixo
+  gerado (contexto inicial até ~90% menor) e ninguém abre `.env` por engano:
+
+  ```json
+  {"permissions": {"deny": [
+    "Read(./node_modules/**)", "Read(./dist/**)", "Read(./build/**)", "Read(./.next/**)",
+    "Read(./coverage/**)", "Read(./package-lock.json)", "Read(./pnpm-lock.yaml)",
+    "Read(./yarn.lock)", "Read(./.env)", "Read(./.env.*)"
+  ]}}
+  ```
 - Cada prompt começa com "leia `docs/ESTADO.md`" e termina com "relatório no formato padrão".
 - Após cada peça, atualize o quadro de peças no `docs/ESTADO.md`.
 
@@ -236,7 +250,8 @@ chame o testador.
   senão ele reporta o login como Bloqueante falso e queima uma rodada de conserto à toa.
 - Encaminhe os achados **em lote** para quem resolve (**corretor-de-bugs** / **criador** /
   **designer**). Depois de consertado, **o testador re-testa** o fluxo (o autor da correção
-  não aprova o próprio trabalho).
+  não aprova o próprio trabalho) — **rerodando os scripts salvos** em `docs/testes/`, que
+  custa uma fração de reescrever o teste.
 
 **🚪 Portão da Fase 2:** **veredito "aprovado" do testador, sem itens Bloqueantes nem Altos.**
 Só então mostre ao usuário: "✅ Testado como cliente e aprovado. Quando quiser, aciono a ciber
@@ -302,6 +317,9 @@ não no histórico do chat. Logo, **todo portão de fase é um ponto seguro de r
 - Sugira `/compact` quando notar o contexto pesado (o usuário confere em `/context`, por
   volta de 50% já vale) — compactar cedo preserva o raciocínio; esperar os 95% degrada.
 - Depois de um `/clear`, o `/status` re-hidrata o essencial em segundos lendo o `ESTADO.md`.
+- **Prefixo estável = cache barato:** o cache de prompt cobra ~10% na releitura do que não
+  mudou. Não mexa em CLAUDE.md/memória nem conecte/desconecte MCP no MEIO da sessão (isso
+  invalida o cache de tudo dali em diante) — esses ajustes se fazem no começo da sessão.
 
 ## Regras de condução
 

@@ -206,8 +206,14 @@ memória externa enxuta. Do seu lado (o usuário):
   correção (senão erro + correção ficam no histórico para sempre).
 - **Desconecte MCPs que não vai usar** (`/mcp`) — servidor conectado pode custar milhares
   de tokens por mensagem mesmo parado.
-- **Pausas longas esfriam o cache de prompt** (~5 min no padrão) — trabalhe em blocos
-  contínuos; voltar horas depois reprocessa o histórico inteiro no preço cheio.
+- **Cache de prompt paga ~10% na releitura do que não mudou** — mantenha o prefixo
+  estável: não troque CLAUDE.md/memória nem conecte/desconecte MCP no meio da sessão
+  (invalida o cache dali em diante). Pausas longas esfriam o cache (~5 min no padrão) —
+  trabalhe em blocos contínuos.
+- **Contexto blindado no projeto do cliente:** o gerente cria `.claude/settings.json`
+  com deny de leitura (node_modules, dist, locks, .env) — contexto inicial até ~90%
+  menor e ninguém lê segredo por engano. (Não existe `.claudeignore` nativo; o
+  equivalente oficial são as regras `permissions.deny` — foi o que usamos.)
 - **Modo econômico:** sessão em **Sonnet** — os agentes de construção continuam fixos em
   **Fable 5** e o mecânico vai para **Haiku**. E o CLAUDE.md do projeto do cliente deve
   ficar enxuto (< 200 linhas): ele entra em TODA mensagem.

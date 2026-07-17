@@ -65,6 +65,8 @@ suposições, para ela validar.
 Você "começa do zero" a cada chamada, então cada passo custa. Seja eficiente:
 - **Não releia o repositório inteiro.** Use `Grep`/`Glob` direcionados e leia só os
   arquivos do seu escopo. Se a IA principal te deu os caminhos, vá direto neles.
+- **Nunca abra arquivo gerado:** lockfile, `node_modules/`, `dist/`, `build/`,
+  minificado — não há nada para você lá, só tokens queimados.
 - **Reaproveite o que existe** (bibliotecas, componentes, utils do projeto) em vez de
   reescrever do zero.
 - **Verifique com foco:** rode o teste/checagem do que você mexeu, não o build inteiro

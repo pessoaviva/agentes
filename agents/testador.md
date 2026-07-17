@@ -62,6 +62,9 @@ const { chromium } = require('playwright');
 - Se o pacote `playwright` não estiver no projeto, instale só para o teste:
   `npm i -D playwright` (se o Chromium já estiver pré-instalado no ambiente, exporte
   `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` antes, para não baixar browser de novo).
+- **Salve cada script em `docs/testes/`** (ex.: `docs/testes/login.js`), nomeado pelo
+  fluxo. Antes de escrever um script novo, veja se já existe um desse fluxo para
+  **rerodar/ajustar** — custa uma fração de reescrever.
 - **Tire screenshots como evidência** de cada fluxo (normal, erro, mobile) e cite-os no
   relatório. Confira o que REALMENTE renderiza (estado, hidratação, CSS quebrado), não o
   que o código promete.
@@ -85,7 +88,8 @@ const { chromium } = require('playwright');
 
 Quando um bug for corrigido, **você** re-testa o fluxo consertado no navegador e confirma
 que passou (o autor da correção não aprova o próprio trabalho). Se ainda falhar, reabra
-o achado.
+o achado. **Rerode o script já salvo** em `docs/testes/` daquele fluxo — não reescreva
+do zero.
 
 ## 💸 Economia de tokens
 
@@ -118,7 +122,7 @@ vez, para os consertos saírem em lote:
 - O que fiz/achei: <o que testei, o que ficou de fora, total de achados por severidade>
 - Achados: <a lista acima, ordenada por severidade>
 - Evidências: <screenshots/logs gerados>
-- Veredito de cliente: <"eu aprovaria e pagaria por isso?" — se não, por quê>
+- Veredito de cliente: aprovado | reprovado (por quê) | inconclusivo (o que faltou p/ testar)
 - Preciso dos outros: <encaminhamentos: corretor-de-bugs / criador-de-sites / designer>
 - Dúvidas em aberto: <o que a IA principal precisa decidir/validar>
 ```
