@@ -14,7 +14,11 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 | **ciberseguranca** | Cria login e blinda a segurança (OWASP) | Fase 3 — depois do sistema pronto |
 | **hacker** | Pentester ético: acha as falhas e reporta | Fase 4 — por último |
 | **corretor-de-bugs** | Vistoria o código e conserta bugs (construção + pós-lançamento) | Fases 1–6 — sob demanda |
+| **revisor-de-codigo** | Segundo olhar independente no código crítico (aponta, não conserta) | Fases 1–6 — sob demanda |
+| **otimizador** | SEO técnico + performance (Core Web Vitals), sem mudar visual/lógica | Fase 5 — antes do build final |
+| **documentador** | Manual do cliente, guia de administração e README de entrega | Fase 5 — junto do deploy |
 | **/gerente** (comando) | Orquestra tudo em pipeline simultâneo, como uma rede neural | Sempre que quiser conduzir o fluxo completo |
+| **/status** (comando) | Mostra onde o projeto parou (fase, peças, pendências), lendo o ESTADO.md | Qualquer momento — retomar sessão |
 
 > **Rede neural de pensamento:** a IA principal (Fable 5 / Opus 4.8) é o "córtex/hub" e
 > os agentes são neurônios especializados. Como subagentes não conversam entre si, eles
@@ -60,9 +64,10 @@ a pasta `.claude/` **dentro do projeto** — é o que este repositório já traz
 ```
 seu-projeto/
 └── .claude/
-    ├── agents/        # criador-de-sites, designer, testador, ciberseguranca, hacker, corretor-de-bugs
+    ├── agents/        # os 9 agentes da equipe (criador-de-sites, designer, testador, ...)
     └── commands/
-        └── gerente.md # vira /gerente (sem prefixo, pois não é plugin)
+        ├── gerente.md # vira /gerente (sem prefixo, pois não é plugin)
+        └── status.md  # vira /status
 ```
 
 Basta copiar a pasta `.claude/` deste repositório para dentro do projeto do cliente,
@@ -104,7 +109,8 @@ Fase 4  hacker SOBE o app e ataca → ciberseguranca corrige em lote → hacker 
            │
            ▼
 Fase 5  🚀 Deploy (dono: criador-de-sites) — build, .env.example, hospedagem, CI
-        🚪 portão: build de produção passa + lista do que o cliente precisa configurar
+        + otimizador (SEO/performance) + documentador (manual do cliente) em paralelo
+        🚪 portão: build passa + auditoria sem item grave + manual entregue + lista do cliente
            │
            ▼
 Fase 6  🐛 App no ar (fase contínua) → corretor-de-bugs conserta bugs pós-lançamento
@@ -121,15 +127,19 @@ agentes/
 ├── .claude-plugin/
 │   ├── plugin.json          # manifesto do plugin
 │   └── marketplace.json     # marketplace que publica este plugin
-├── agents/                  # os 6 agentes trabalhadores (FONTE CANÔNICA — edite aqui)
+├── agents/                  # os 9 agentes trabalhadores (FONTE CANÔNICA — edite aqui)
 │   ├── criador-de-sites.md
 │   ├── designer.md
 │   ├── testador.md
 │   ├── ciberseguranca.md
 │   ├── hacker.md
-│   └── corretor-de-bugs.md
+│   ├── corretor-de-bugs.md
+│   ├── revisor-de-codigo.md
+│   ├── otimizador.md
+│   └── documentador.md
 ├── commands/
-│   └── gerente.md           # o orquestrador (vira /agentes:gerente)
+│   ├── gerente.md           # o orquestrador (vira /agentes:gerente)
+│   └── status.md            # /status — onde o projeto parou (lê o ESTADO.md)
 ├── instalar-agentes.sh      # instalação alternativa em ~/.claude
 └── sincronizar.sh           # replica agents/ e commands/ para .claude/
 ```
@@ -146,11 +156,12 @@ agentes/
 
 **Fable 5 é o modelo mais capaz** — é o cérebro que faz o trabalho generativo e crítico.
 Os agentes que **criam/consertam o produto** vêm fixos em `model: fable`:
-**criador-de-sites, designer, ciberseguranca e corretor-de-bugs**. Eles rodam com a
-inteligência do Fable 5 **mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo).
+**criador-de-sites, designer, ciberseguranca, corretor-de-bugs e otimizador**. Eles rodam
+com a inteligência do Fable 5 **mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo).
 
-Os agentes que só **leem e reportam** (**testador** e **hacker**) vêm em `model: sonnet`
-— dá conta da leitura/varredura e é mais barato. Não é rebaixamento: é usar o motor certo
+Os agentes que só **leem e reportam/explicam** (**testador**, **hacker**,
+**revisor-de-codigo** e **documentador**) vêm em `model: sonnet` — dá conta da
+leitura/varredura/redação e é mais barato. Não é rebaixamento: é usar o motor certo
 para o papel certo (economia real).
 
 - **Fallback automático e seguro:** se o modelo fixado não estiver disponível na sua
@@ -167,8 +178,8 @@ O `/gerente` roteia o **modelo por papel** e o **esforço pela dificuldade** —
 economiza de verdade, sem inverter a hierarquia dos modelos:
 
 - **Trivial** (texto, 1 linha, dúvida): a IA principal faz **inline**, sem gastar subagente.
-- **Leitura/varredura** (testador, hacker no recon): **Sonnet 5**.
-- **Construção/conserto** (criador, designer, ciberseguranca, corretor): **Fable 5**.
+- **Leitura/varredura** (testador, hacker no recon, revisor-de-codigo, documentador): **Sonnet 5**.
+- **Construção/conserto** (criador, designer, ciberseguranca, corretor, otimizador): **Fable 5**.
 - **Crítico** (segurança, dinheiro, dados, bug cabeludo): **Fable 5** com **esforço máximo**.
 - **Ultracode:** Fable 5 + passada de **auto-revisão** (skill `code-review`) antes de entregar.
 - **Opus 4.8:** alternativa premium **lado a lado** do Fable (um segundo cérebro), **não**

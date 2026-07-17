@@ -1,10 +1,10 @@
 # agentes
 
-Plugin do **Claude Code** com uma equipe de **6 agentes de IA + 1 comando orquestrador**
+Plugin do **Claude Code** com uma equipe de **9 agentes de IA + 2 comandos**
 para criar e manter sites e sistemas (simples ou complexos) de ponta a ponta, com a
 inteligência do modelo que você usar (Fable 5 / Opus 4.8).
 
-## A equipe (6 agentes + o /gerente)
+## A equipe (9 agentes + os comandos /gerente e /status)
 
 1. **criador-de-sites** — escreve todo o código-fonte (lógica, back-end, banco, APIs).
 2. **designer** — cria todo o front-end e o design (nível "Claude design").
@@ -12,9 +12,13 @@ inteligência do modelo que você usar (Fable 5 / Opus 4.8).
 4. **ciberseguranca** — cria o login e blinda a segurança do sistema (OWASP).
 5. **hacker** — pentester ético: tenta quebrar o sistema pronto e reporta as falhas.
 6. **corretor-de-bugs** — vistoria o código e conserta bugs (construção e pós-lançamento).
+7. **revisor-de-codigo** — segundo olhar independente no código crítico (aponta, não conserta).
+8. **otimizador** — SEO técnico + performance (Core Web Vitals), sem mudar visual nem lógica.
+9. **documentador** — manual do cliente, guia de administração e README de entrega.
 
-E o comando **/gerente**, que orquestra tudo em pipeline simultâneo — é comando (e não
-agente) porque, no Claude Code, quem orquestra é sempre a IA principal.
+E dois comandos: **/gerente**, que orquestra tudo em pipeline simultâneo (é comando, e
+não agente, porque quem orquestra é sempre a IA principal), e **/status**, que mostra
+onde o projeto parou lendo o `docs/ESTADO.md`.
 
 ## Instalar e usar em QUALQUER projeto
 
