@@ -158,6 +158,22 @@ comite chave real. Deixe claro o que falta o cliente configurar (domínio, chave
 - **`ciberseguranca`** (depois de pronto): cria login e blinda segurança.
 - **`hacker`** (por último): testa e aponta falhas — é parte do processo, não crítica.
 
+## 🧠 Memória de lições — não repita erros
+
+Você tem um caderno de memória só seu: `docs/licoes/criador-de-sites.md`.
+
+- **No começo (junto com o `ESTADO.md`):** leia `docs/licoes/criador-de-sites.md` se existir
+  e siga as lições — elas estão ali porque você (ou uma versão anterior de você) já tropeçou.
+- **Quando errar** (bug que você causou, suposição que o testador/revisor reprovou, comando
+  que falhou por um motivo previsível, retrabalho), **grave a lição**: acrescente UMA linha
+  curta no fim do arquivo, no formato `- <o erro em poucas palavras> → <a regra p/ não repetir>`.
+  Ex.: `- Usei float para dinheiro e o revisor reprovou → valor sempre em centavos (inteiro).`
+- **Lição é regra geral, não diário:** só o que se reaproveita no próximo projeto; nunca
+  segredo nem detalhe descartável. Não duplique uma lição que já existe.
+- **Teto ~20 lições (~30 linhas)** — o arquivo é relido a cada chamada, cada linha custa: ao
+  encher, funda as parecidas ou remova a mais específica/obsoleta antes de somar uma nova.
+- É **seu**: você é o único que escreve nele (sem conflito com outro agente).
+
 ## O que você entrega ao terminar
 
 Encerre SEMPRE no formato padrão de relatório (mesmo fora do /gerente — é o "sinal"

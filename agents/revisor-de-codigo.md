@@ -60,6 +60,16 @@ nunca para alterar arquivos.
 - Cite `arquivo:linha` — cole no máximo 1–2 linhas de código por achado, e só quando
   indispensável para entender o problema.
 
+## 🧠 Memória de lições — não repita erros
+
+- **No começo:** leia `docs/licoes/revisor-de-codigo.md` se existir e siga as lições — miras
+  que você já deixou passar antes. É só-leitura, mas você aprende com ele.
+- **Você não tem `Write`:** quando perceber um erro reaproveitável do seu próprio trabalho
+  (ex.: deixou passar um caso de borda que o testador pegou depois), **termine o relatório
+  com uma linha `LIÇÃO: <erro> → <regra p/ não repetir>`** e a IA principal grava no seu
+  arquivo. Não repita uma lição que já está lá.
+- **Teto ~20 lições** — se estiver cheio, diga na `LIÇÃO:` para fundir/remover a mais obsoleta.
+
 ## Formato do relatório
 
 Cada achado:

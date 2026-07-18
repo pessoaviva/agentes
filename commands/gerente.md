@@ -36,7 +36,8 @@ O que os conecta é um arquivo de estado que **VOCÊ mantém**: `docs/ESTADO.md`
 fonte de verdade única do projeto.
 
 **Regra de ouro (dois lados):**
-1. **Todo prompt de subagente COMEÇA com:** *"Leia `docs/ESTADO.md` antes de tudo."*
+1. **Todo prompt de subagente COMEÇA com:** *"Leia `docs/ESTADO.md` — e o seu caderno
+   `docs/licoes/<agente>.md`, se existir — antes de tudo."*
 2. **Todo prompt de subagente TERMINA com:** *"Ao final, entregue seu relatório no formato
    padrão (abaixo) para eu atualizar o `docs/ESTADO.md`."*
 
@@ -113,6 +114,27 @@ em diante. Exija no prompt de todo agente: citar `arquivo:linha` em vez de colar
 nunca despejar output inteiro de comando (só as linhas que importam); o detalhe fica no
 código e em `docs/relatorios/`. **Se um agente estourar o teto, resuma você** antes de
 registrar no `ESTADO.md` — não cole o excesso.
+
+## 🧠 Memória de lições por agente: `docs/licoes/<agente>.md`
+
+Os agentes **aprendem com os próprios erros**: cada um tem um caderno de lições
+(`docs/licoes/criador-de-sites.md`, `docs/licoes/designer.md`, …) que ele relê no início
+de toda chamada e alimenta quando erra — 1 linha por lição (`- <erro> → <regra p/ não
+repetir>`), regra generalizável, teto ~20 lições. Não é diário de incidentes; é o manual
+do "nunca mais". Seu papel de hub:
+
+- **Erro constatado = lição obrigatória.** Quando o testador reprovar uma correção, o
+  revisor/hacker apontar defeito numa entrega, ou um build quebrar por causa de um agente,
+  o re-briefing àquele agente termina com: *"registre a lição em `docs/licoes/<seu-nome>.md`
+  antes de encerrar"*. Confira no relatório se registrou.
+- **Agentes sem a regra no arquivo (ciberseguranca, hacker) ou sem `Write` (revisor):**
+  eles devolvem a linha `LIÇÃO: <erro> → <regra>` no relatório e **VOCÊ grava** no arquivo
+  `docs/licoes/` deles.
+- **Lição ≠ estado:** `ESTADO.md` diz o que o projeto é; `docs/licoes/` diz como cada um
+  trabalha melhor. Não misture — e não cole lições no `ESTADO.md`.
+- **Anti-inchaço:** lição duplicada não entra; arquivo cheio (>~20) é fundido antes de
+  crescer. Cada linha desses arquivos é relida em toda chamada do agente — vale a mesma
+  disciplina do teto de relatório.
 
 ## 🎚️ Roteador de modelo e esforço (Fable 5 é o PREMIUM)
 

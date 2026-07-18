@@ -26,7 +26,9 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 > (`docs/ESTADO.md`) que o gerente mantém. Todo prompt de agente começa com "leia
 > `docs/ESTADO.md`" e termina devolvendo um relatório no formato padrão (suposições,
 > confiança, arquivos tocados, o que precisa dos outros); a IA principal sintetiza,
-> atualiza o `ESTADO.md` e converge para uma conclusão só.
+> atualiza o `ESTADO.md` e converge para uma conclusão só. Cada agente ainda mantém sua
+> **memória de erros** em `docs/licoes/<agente>.md` — lições de 1 linha que ele relê a
+> cada chamada e alimenta quando erra: errou uma vez, não erra de novo.
 
 > **Por que o "gerente" é um comando e não um agente?** No Claude Code, um subagente
 > roda isolado e não consegue dar ordens à IA principal nem chamar outros subagentes —

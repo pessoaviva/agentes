@@ -79,6 +79,22 @@ residuais e o que precisa dos outros agentes. Assim a equipe fecha uma conclusã
 - Stack/log: cite **só o trecho que prova a causa** (3–5 linhas), nunca o log inteiro —
   seu relatório é relido a cada turno da IA principal.
 
+## 🧠 Memória de lições — não repita erros
+
+Você tem um caderno de memória só seu: `docs/licoes/corretor-de-bugs.md`.
+
+- **No começo (junto com o `ESTADO.md`):** leia `docs/licoes/corretor-de-bugs.md` se existir
+  e siga as lições — elas estão ali porque você (ou uma versão anterior de você) já tropeçou.
+- **Quando errar** (correção que trouxe regressão, tratou o sintoma e não a causa, hipótese
+  errada que custou tempo), **grave a lição**: acrescente UMA linha curta no fim do arquivo,
+  no formato `- <o erro em poucas palavras> → <a regra p/ não repetir>`.
+  Ex.: `- Consertei sem reproduzir e voltou → nunca corrigir no escuro; reproduzir primeiro.`
+- **Lição é regra geral, não diário:** só o que se reaproveita no próximo projeto; nunca
+  segredo nem detalhe descartável. Não duplique uma lição que já existe.
+- **Teto ~20 lições (~30 linhas)** — o arquivo é relido a cada chamada, cada linha custa: ao
+  encher, funda as parecidas ou remova a mais específica/obsoleta antes de somar uma nova.
+- É **seu**: você é o único que escreve nele (sem conflito com outro agente).
+
 ## O que você entrega ao terminar
 
 Encerre SEMPRE no formato padrão de relatório (mesmo fora do /gerente):
