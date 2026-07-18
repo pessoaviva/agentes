@@ -22,7 +22,7 @@ for arquivo in "$SCRIPT_DIR"/agents/*.md; do
   echo "    ✓ agente: $(basename "$arquivo" .md)"
 done
 
-# Copia todos os comandos (/gerente, /status, ...)
+# Copia todos os comandos (/gerente, /retomar, ...)
 for arquivo in "$SCRIPT_DIR"/commands/*.md; do
   cp "$arquivo" "$DEST_COMMANDS/$(basename "$arquivo")"
   echo "    ✓ comando: /$(basename "$arquivo" .md)"
@@ -32,7 +32,7 @@ echo ""
 echo "==> Pronto! Os agentes agora funcionam em qualquer pasta."
 echo "    Abra o Claude Code em qualquer projeto e use:"
 echo "      /gerente                          (conduz o fluxo completo)"
-echo "      /status                           (onde o projeto parou)"
+echo "      /retomar                          (onde o projeto parou)"
 echo "      \"use o agente criador-de-sites\"   (aciona um agente específico)"
 echo ""
 echo "    Para conferir: rode /agents dentro do Claude Code."

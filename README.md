@@ -4,7 +4,7 @@ Plugin do **Claude Code** com uma equipe de **9 agentes de IA + 2 comandos**
 para criar e manter sites e sistemas (simples ou complexos) de ponta a ponta, com a
 inteligência do modelo que você usar (Fable 5 / Opus 4.8).
 
-## A equipe (9 agentes + os comandos /gerente e /status)
+## A equipe (9 agentes + os comandos /gerente e /retomar)
 
 1. **criador-de-sites** — escreve todo o código-fonte (lógica, back-end, banco, APIs).
 2. **designer** — cria todo o front-end e o design (nível "Claude design").
@@ -17,8 +17,10 @@ inteligência do modelo que você usar (Fable 5 / Opus 4.8).
 9. **documentador** — manual do cliente, guia de administração e README de entrega.
 
 E dois comandos: **/gerente**, que orquestra tudo em pipeline simultâneo (é comando, e
-não agente, porque quem orquestra é sempre a IA principal), e **/status**, que mostra
-onde o projeto parou lendo o `docs/ESTADO.md`.
+não agente, porque quem orquestra é sempre a IA principal), e **/retomar**, que mostra
+onde o projeto parou lendo o `docs/ESTADO.md` (o nome evita colisão com o `/status`
+nativo do Claude Code). Instale por **uma** via só — plugin OU cópia local — para não
+duplicar os agentes.
 
 ## Instalar e usar em QUALQUER projeto
 

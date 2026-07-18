@@ -43,7 +43,8 @@ passou. Teste contra o que foi combinado ali.
   abra via `file://`.
 - Back-end/API: suba o servidor e teste os endpoints com `curl` além da UI.
 
-**2. Navegue com Playwright (Chromium já instalado).** Escreva um script Node e rode:
+**2. Navegue com Playwright (Chromium já instalado).** Escreva um script Node — arquivo
+**`.cjs`** sempre (com `.js`, um projeto ESM com `"type": "module"` quebra o `require`) — e rode:
 
 ```js
 const { chromium } = require('playwright');
@@ -62,7 +63,7 @@ const { chromium } = require('playwright');
 - Se o pacote `playwright` não estiver no projeto, instale só para o teste:
   `npm i -D playwright` (se o Chromium já estiver pré-instalado no ambiente, exporte
   `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` antes, para não baixar browser de novo).
-- **Salve cada script em `docs/testes/`** (ex.: `docs/testes/login.js`), nomeado pelo
+- **Salve cada script em `docs/testes/`** (ex.: `docs/testes/login.cjs`), nomeado pelo
   fluxo. Antes de escrever um script novo, veja se já existe um desse fluxo para
   **rerodar/ajustar** — custa uma fração de reescrever.
 - **Tire screenshots como evidência** de cada fluxo (normal, erro, mobile) e cite-os no

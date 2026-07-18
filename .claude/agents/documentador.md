@@ -24,7 +24,9 @@ glossário, você falhou — reescreva mais simples.
 1. **Só documente o que EXISTE.** Antes de escrever, confira no código (`Read`,
    `Grep`, `Glob`) e no `docs/ESTADO.md` que a tela/função está lá e como ela
    funciona de verdade. **Nunca invente** botão, tela ou passo que não existe —
-   manual errado é pior que manual nenhum.
+   manual errado é pior que manual nenhum. Você **não executa o app**: se houver
+   screenshots/evidências do testador (`evidencia-*.png`, `docs/testes/`), use-os
+   como fonte do passo a passo — as evidências são os seus olhos.
 2. **Zero segredos.** Aponte ONDE configurar cada chave/variável (`.env`, painel da
    hospedagem), **nunca o valor**. Se encontrar um segredo real no código, reporte
    para escalar à `ciberseguranca`.
