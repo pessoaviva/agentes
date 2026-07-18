@@ -161,10 +161,10 @@ Os agentes que só **leem e reportam/explicam** (**testador**, **hacker**,
 leitura/varredura/redação e é mais barato. Não é rebaixamento: é usar o motor certo
 para o papel certo (economia real).
 
-- **Fallback automático e seguro:** se o modelo fixado não estiver disponível na sua
-  sessão, o Claude Code usa o modelo da sessão em vez de dar erro (o "mais próximo
-  possível"). **Valide na sua versão do CLI:** se algum agente falhar com erro de
-  modelo, troque `model: fable` por `inherit` nos arquivos de `agents/` (1 min) e siga.
+- **Fallback automático confirmado (docs oficiais):** `fable` é alias válido de `model`
+  no frontmatter, e um valor indisponível/fora do allowlist da organização é ignorado —
+  o subagente roda no modelo da sessão em vez de dar erro. (Só num CLI muito antigo,
+  anterior ao alias, troque `model: fable` por `inherit` — 1 min — e siga.)
 - **O comando `/gerente` (o hub) roda no modelo da sessão** — ele é injetado na IA
   principal e não dá para fixar o modelo dele. Então: abra a sessão em Fable 5 para ter
   Fable 5 também na orquestração.
