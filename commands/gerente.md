@@ -74,11 +74,11 @@ Logo após aprovar os requisitos (Fase 0), escreva este arquivo:
 - Chaves de dados / modelos: <ex.: usuario{id,nome}, agendamento{...}>
 
 ## 5. Quadro de peças (pipeline)
-| Peça | Status | Dono atual | Observações |
-|---|---|---|---|
-| login (lógica) | ✅ pronto | criador | stub de auth deixado p/ ciberseguranca |
-| login (visual) | 🔄 em andamento | designer | |
-| cadastro | ⏳ na fila | criador | |
+| Peça | Status | Dono atual | Arquivos | Observações |
+|---|---|---|---|---|
+| login (lógica) | ✅ pronto | criador | src/rotas/login.js | stub de auth p/ ciberseguranca |
+| login (visual) | 🔄 em andamento | designer | src/estilos/login.css | |
+| cadastro | ⏳ na fila | criador | src/rotas/cadastro.js | |
 
 ## 6. Relatórios dos agentes (resumo + últimos 2–3)
 <1 linha de resumo por relatório; só os 2–3 mais recentes na íntegra — os antigos
@@ -111,7 +111,8 @@ Para **testador** e **hacker**, cada achado leva severidade (formato nos arquivo
 para a SUA janela e vai para o `ESTADO.md` — cada linha dele é relida a cada turno dali
 em diante. Exija no prompt de todo agente: citar `arquivo:linha` em vez de colar código;
 nunca despejar output inteiro de comando (só as linhas que importam); o detalhe fica no
-código e em `docs/relatorios/`.
+código e em `docs/relatorios/`. **Se um agente estourar o teto, resuma você** antes de
+registrar no `ESTADO.md` — não cole o excesso.
 
 ## 🎚️ Roteador de modelo e esforço (Fable 5 é o PREMIUM)
 
@@ -196,6 +197,8 @@ peça por peça. **A regra que evita atropelo:** criador e designer podem correr
 - **Dois agentes NUNCA editam o mesmo arquivo na mesma rodada.** Se lógica e visual moram no
   mesmo arquivo, peça ao criador para separar o estilo num arquivo próprio (CSS/módulo) **antes**
   de soltar o designer nele. Registre isso no contrato de propriedade do `docs/ESTADO.md`.
+  **A trava é a coluna Arquivos do quadro de peças:** antes de disparar cada leva, confira
+  que nenhum arquivo se repete entre as peças em andamento.
 - **Os agentes não se falam** — quem recebe cada relatório, atualiza o estado e repassa é **VOCÊ**.
 - **Você decide a prioridade** das peças (o que destrava mais, ou o que o cliente mais quer).
 - **Agentes "cliente" (testador) e o hacker só entram DEPOIS** que a peça/o sistema está pronto.
@@ -231,9 +234,16 @@ assuma escolhas sensatas do ramo e **liste no ESTADO.md o que assumiu**.
   {"permissions": {"deny": [
     "Read(./node_modules/**)", "Read(./dist/**)", "Read(./build/**)", "Read(./.next/**)",
     "Read(./coverage/**)", "Read(./package-lock.json)", "Read(./pnpm-lock.yaml)",
-    "Read(./yarn.lock)", "Read(./.env)", "Read(./.env.*)"
+    "Read(./yarn.lock)", "Read(./.env)", "Read(./.env.local)", "Read(./.env.*.local)",
+    "Read(./.env.development)", "Read(./.env.production)", "Read(./.env.staging)",
+    "Read(./.env.test)"
   ]}}
   ```
+
+  Sem curinga `.env.*` de propósito: o **`.env.example` precisa continuar legível** (o
+  criador o cria e o documentador o documenta). **Se o settings já existir no projeto,
+  faça MERGE** — acrescente as regras ao array `deny` existente, nunca sobrescreva a
+  configuração do cliente. Regras novas valem com certeza a partir da sessão seguinte.
 - Cada prompt começa com "leia `docs/ESTADO.md`" e termina com "relatório no formato padrão".
 - Após cada peça, atualize o quadro de peças no `docs/ESTADO.md`.
 
@@ -291,6 +301,8 @@ resultado do pentest.
 - Na mesma leva (arquivos diferentes), acione o **otimizador** (SEO técnico + performance:
   meta/OG, sitemap, robots, JSON-LD, imagens, fontes — com números antes × depois) e o
   **documentador** (manual do cliente, guia de administração e README de entrega, em `docs/`).
+  **Passe ao documentador os screenshots/evidências do testador** (`evidencia-*.png`,
+  `docs/testes/`) como fonte visual — ele não roda o app; as evidências são os olhos dele.
 
 **🚪 Portão da Fase 5:** **build de produção passa** + auditoria do otimizador sem item grave
 + manual do documentador entregue + o `docs/ESTADO.md` lista o que falta o cliente configurar
@@ -312,11 +324,11 @@ O `docs/ESTADO.md` é memória EXTERNA: tudo que importa mora nele (e em `docs/r
 não no histórico do chat. Logo, **todo portão de fase é um ponto seguro de reset**:
 
 - Ao fechar um portão, avise em 1 linha: *"Portão da Fase N fechado e registrado no
-  ESTADO.md — ponto seguro para `/clear` (ou `/compact`); depois rode `/status` que eu
+  ESTADO.md — ponto seguro para `/clear` (ou `/compact`); depois rode `/retomar` que eu
   retomo daqui."* Projeto longo com janela sempre pequena é o maior corte de custo que existe.
 - Sugira `/compact` quando notar o contexto pesado (o usuário confere em `/context`, por
   volta de 50% já vale) — compactar cedo preserva o raciocínio; esperar os 95% degrada.
-- Depois de um `/clear`, o `/status` re-hidrata o essencial em segundos lendo o `ESTADO.md`.
+- Depois de um `/clear`, o `/retomar` re-hidrata o essencial em segundos lendo o `ESTADO.md`.
 - **Prefixo estável = cache barato:** o cache de prompt cobra ~10% na releitura do que não
   mudou. Não mexa em CLAUDE.md/memória nem conecte/desconecte MCP no MEIO da sessão (isso
   invalida o cache de tudo dali em diante) — esses ajustes se fazem no começo da sessão.

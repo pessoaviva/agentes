@@ -18,7 +18,7 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 | **otimizador** | SEO técnico + performance (Core Web Vitals), sem mudar visual/lógica | Fase 5 — antes do build final |
 | **documentador** | Manual do cliente, guia de administração e README de entrega | Fase 5 — junto do deploy |
 | **/gerente** (comando) | Orquestra tudo em pipeline simultâneo, como uma rede neural | Sempre que quiser conduzir o fluxo completo |
-| **/status** (comando) | Mostra onde o projeto parou (fase, peças, pendências), lendo o ESTADO.md | Qualquer momento — retomar sessão |
+| **/retomar** (comando) | Mostra onde o projeto parou (fase, peças, pendências), lendo o ESTADO.md | Qualquer momento — retomar sessão |
 
 > **Rede neural de pensamento:** a IA principal (Fable 5 / Opus 4.8) é o "córtex/hub" e
 > os agentes são neurônios especializados. Como subagentes não conversam entre si, eles
@@ -33,7 +33,10 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 > quem orquestra é sempre a IA principal. Por isso o Gerente é um comando: ele injeta
 > todo o passo-a-passo na IA principal e a coloca no comando da orquestração.
 
-## Como usar em QUALQUER projeto — 2 formas
+## Como usar em QUALQUER projeto — 3 formas
+
+> ⚠️ **Use UMA forma por projeto.** Plugin instalado + pasta `.claude/` no projeto (ou +
+> cópia em `~/.claude`) = agentes duplicados, com versões que divergem sem ninguém notar.
 
 ### Forma 1 (recomendada): instalar como plugin
 Instala uma vez, vale em todos os projetos e atualiza fácil via `git`. Dentro do
@@ -67,7 +70,7 @@ seu-projeto/
     ├── agents/        # os 9 agentes da equipe (criador-de-sites, designer, testador, ...)
     └── commands/
         ├── gerente.md # vira /gerente (sem prefixo, pois não é plugin)
-        └── status.md  # vira /status
+        └── retomar.md # vira /retomar (nome que não colide com o /status nativo)
 ```
 
 Basta copiar a pasta `.claude/` deste repositório para dentro do projeto do cliente,
@@ -128,18 +131,12 @@ agentes/
 │   ├── plugin.json          # manifesto do plugin
 │   └── marketplace.json     # marketplace que publica este plugin
 ├── agents/                  # os 9 agentes trabalhadores (FONTE CANÔNICA — edite aqui)
-│   ├── criador-de-sites.md
-│   ├── designer.md
-│   ├── testador.md
-│   ├── ciberseguranca.md
-│   ├── hacker.md
-│   ├── corretor-de-bugs.md
-│   ├── revisor-de-codigo.md
-│   ├── otimizador.md
-│   └── documentador.md
+│   ├── criador-de-sites.md · designer.md · testador.md
+│   ├── ciberseguranca.md · hacker.md · corretor-de-bugs.md
+│   └── revisor-de-codigo.md · otimizador.md · documentador.md
 ├── commands/
 │   ├── gerente.md           # o orquestrador (vira /agentes:gerente)
-│   └── status.md            # /status — onde o projeto parou (lê o ESTADO.md)
+│   └── retomar.md           # /retomar — onde o projeto parou (lê o ESTADO.md)
 ├── instalar-agentes.sh      # instalação alternativa em ~/.claude
 └── sincronizar.sh           # replica agents/ e commands/ para .claude/
 ```
@@ -164,8 +161,10 @@ Os agentes que só **leem e reportam/explicam** (**testador**, **hacker**,
 leitura/varredura/redação e é mais barato. Não é rebaixamento: é usar o motor certo
 para o papel certo (economia real).
 
-- **Fallback automático e seguro:** se o modelo fixado não estiver disponível na sua
-  sessão, o Claude Code usa o modelo da sessão em vez de dar erro (o "mais próximo possível").
+- **Fallback automático confirmado (docs oficiais):** `fable` é alias válido de `model`
+  no frontmatter, e um valor indisponível/fora do allowlist da organização é ignorado —
+  o subagente roda no modelo da sessão em vez de dar erro. (Só num CLI muito antigo,
+  anterior ao alias, troque `model: fable` por `inherit` — 1 min — e siga.)
 - **O comando `/gerente` (o hub) roda no modelo da sessão** — ele é injetado na IA
   principal e não dá para fixar o modelo dele. Então: abra a sessão em Fable 5 para ter
   Fable 5 também na orquestração.
@@ -198,7 +197,7 @@ têm **teto de ~25 linhas** com `arquivo:linha` em vez de código colado, e o `E
 memória externa enxuta. Do seu lado (o usuário):
 
 - **`/clear` nos portões de fase** — o gerente avisa quando é seguro: o `ESTADO.md` guarda
-  tudo e o `/status` re-hidrata em segundos. Maior ganho em projeto longo: janela sempre
+  tudo e o `/retomar` re-hidrata em segundos. Maior ganho em projeto longo: janela sempre
   pequena em vez de arrastar 100k+ de histórico.
 - **`/compact` cedo** (~50% do contexto; veja em `/context`) — não espere o aviso dos 95%.
   Acompanhe o gasto com `/usage`.
