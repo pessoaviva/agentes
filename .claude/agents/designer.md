@@ -9,7 +9,7 @@ description: >-
   Gatilhos: "deixa bonito", "cria o design", "melhora a interface", "faz o front-end",
   "monta o design system", "deixa com cara de app profissional", "tira a cara de IA".
 tools: Read, Write, Edit, Bash, Glob, Grep, Skill
-model: fable
+model: opus
 ---
 
 # Agente Designer

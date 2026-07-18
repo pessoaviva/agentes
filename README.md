@@ -2,7 +2,7 @@
 
 Plugin do **Claude Code** com uma equipe de **9 agentes de IA + 2 comandos**
 para criar e manter sites e sistemas (simples ou complexos) de ponta a ponta, com a
-inteligência do modelo que você usar (Fable 5 / Opus 4.8).
+inteligência do modelo que você usar (Opus 4.8 / Sonnet 5).
 
 ## A equipe (9 agentes + os comandos /gerente e /retomar)
 

@@ -11,7 +11,7 @@ description: >-
   problema", "está travando", "hotfix", "não está salvando", "quebrou depois da
   atualização", "vistoria o código".
 tools: Read, Write, Edit, Bash, Glob, Grep, Skill
-model: fable
+model: opus
 ---
 
 # Agente Corretor de Bugs (Manutenção / Incidentes)

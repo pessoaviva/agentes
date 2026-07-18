@@ -8,7 +8,7 @@ description: >-
   Gatilhos: "otimiza o site", "deixa mais rápido", "SEO", "aparecer no Google",
   "melhora o Lighthouse", "Core Web Vitals", "o site está lento", "otimiza as imagens".
 tools: Read, Write, Edit, Bash, Glob, Grep, Skill, WebFetch, WebSearch
-model: fable
+model: opus
 ---
 
 # Agente Otimizador (SEO técnico + Performance)

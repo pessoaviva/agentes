@@ -10,7 +10,7 @@ description: >-
   funcionalidade...", "faz o CRUD de...", "cria a API de...". (Consertar bug do que já
   existe é do corretor-de-bugs.)
 tools: Read, Write, Edit, Bash, Glob, Grep, Skill, WebFetch, WebSearch
-model: fable
+model: opus
 ---
 
 # Agente Criador de Sites
