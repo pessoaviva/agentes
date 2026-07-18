@@ -2,7 +2,7 @@
 
 Este repositório é um **plugin do Claude Code** com uma equipe de agentes
 especializados para construir sites e sistemas (simples ou complexos) de ponta a
-ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 5).
+ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Sonnet 5).
 
 ## Os agentes
 
@@ -20,13 +20,15 @@ ponta, com a inteligência do modelo que você estiver usando (Opus 4.8 / Fable 
 | **/gerente** (comando) | Orquestra tudo em pipeline simultâneo, como uma rede neural | Sempre que quiser conduzir o fluxo completo |
 | **/retomar** (comando) | Mostra onde o projeto parou (fase, peças, pendências), lendo o ESTADO.md | Qualquer momento — retomar sessão |
 
-> **Rede neural de pensamento:** a IA principal (Fable 5 / Opus 4.8) é o "córtex/hub" e
+> **Rede neural de pensamento:** a IA principal (Opus 4.8 / Sonnet 5) é o "córtex/hub" e
 > os agentes são neurônios especializados. Como subagentes não conversam entre si, eles
 > se conectam **através da IA principal** + um **arquivo de estado compartilhado**
 > (`docs/ESTADO.md`) que o gerente mantém. Todo prompt de agente começa com "leia
 > `docs/ESTADO.md`" e termina devolvendo um relatório no formato padrão (suposições,
 > confiança, arquivos tocados, o que precisa dos outros); a IA principal sintetiza,
-> atualiza o `ESTADO.md` e converge para uma conclusão só.
+> atualiza o `ESTADO.md` e converge para uma conclusão só. Cada agente ainda mantém sua
+> **memória de erros** em `docs/licoes/<agente>.md` — lições de 1 linha que ele relê a
+> cada chamada e alimenta quando erra: errou uma vez, não erra de novo.
 
 > **Por que o "gerente" é um comando e não um agente?** No Claude Code, um subagente
 > roda isolado e não consegue dar ordens à IA principal nem chamar outros subagentes —
@@ -85,6 +87,11 @@ projeto"*.
 ## O fluxo de trabalho (o que o gerente conduz)
 
 Cada fase tem um **portão** (o "pronto") — o gerente não avança sem ele.
+
+> ⚡ **Antes de tudo, o gerente tria a complexidade.** Site simples (landing page,
+> estático, sem login/banco) vai pelo **Modo Rápido**: construção inline ou 1 passada de
+> designer em Sonnet 5, **pulando as fases de segurança e o QA formal**. O fluxo completo
+> abaixo (Modo Completo) é para **sistemas** de verdade — não desperdice ele numa landing.
 
 ```
 Fase 0  Levantamento de requisitos → escreve docs/ESTADO.md
@@ -149,41 +156,41 @@ agentes/
 3. Suba a `version` em `.claude-plugin/plugin.json` **e** `marketplace.json` — sem isso,
    `/plugin marketplace update pessoaviva` não enxerga a mudança.
 
-## Observação sobre o modelo (Fable 5 é o premium)
+## Observação sobre o modelo (Opus 4.8 é o premium)
 
-**Fable 5 é o modelo mais capaz** — é o cérebro que faz o trabalho generativo e crítico.
-Os agentes que **criam/consertam o produto** vêm fixos em `model: fable`:
+**Opus 4.8 é o modelo mais capaz** — é o cérebro que faz o trabalho generativo e crítico.
+Os agentes que **criam/consertam o produto** vêm fixos em `model: opus`:
 **criador-de-sites, designer, ciberseguranca, corretor-de-bugs e otimizador**. Eles rodam
-com a inteligência do Fable 5 **mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo).
+com a inteligência do Opus 4.8 **mesmo que a sua sessão esteja em Sonnet 5** (ou outro modelo).
 
 Os agentes que só **leem e reportam/explicam** (**testador**, **hacker**,
 **revisor-de-codigo** e **documentador**) vêm em `model: sonnet` — dá conta da
 leitura/varredura/redação e é mais barato. Não é rebaixamento: é usar o motor certo
 para o papel certo (economia real).
 
-- **Fallback automático confirmado (docs oficiais):** `fable` é alias válido de `model`
+- **Fallback automático confirmado (docs oficiais):** `opus` é alias válido de `model`
   no frontmatter, e um valor indisponível/fora do allowlist da organização é ignorado —
   o subagente roda no modelo da sessão em vez de dar erro. (Só num CLI muito antigo,
-  anterior ao alias, troque `model: fable` por `inherit` — 1 min — e siga.)
+  anterior ao alias, troque `model: opus` por `inherit` — 1 min — e siga.)
 - **O comando `/gerente` (o hub) roda no modelo da sessão** — ele é injetado na IA
-  principal e não dá para fixar o modelo dele. Então: abra a sessão em Fable 5 para ter
-  Fable 5 também na orquestração.
-- **Custo:** o Fable 5 consome o limite de uso mais rápido. Se preferir que os agentes
-  sigam o modelo da sessão, troque o `model:` por `inherit` nos arquivos de `agents/`.
+  principal e não dá para fixar o modelo dele. Então: abra a sessão em Opus 4.8 para ter
+  Opus 4.8 também na orquestração (ou em Sonnet 5, no modo econômico).
+- **Custo:** o Opus 4.8 é o mais caro e consome o limite mais rápido — por isso o roteador
+  manda **construção simples (landing page, página estática) para Sonnet 5** e só reserva
+  o Opus para lógica/arquitetura de verdade. Se preferir que os agentes sigam o modelo da
+  sessão, troque o `model:` por `inherit` nos arquivos de `agents/`.
 
-### Roteador automático (por papel, não por "força")
+### Roteador automático (por papel e por dificuldade)
 
-O `/gerente` roteia o **modelo por papel** e o **esforço pela dificuldade** — o que
-economiza de verdade, sem inverter a hierarquia dos modelos:
+O `/gerente` roteia o **modelo por papel** e o **esforço pela dificuldade**:
 
 - **Trivial** (texto, 1 linha, dúvida): a IA principal faz **inline**, sem gastar subagente.
 - **Mecânico** (rodar build/teste e dizer se passou, conversão, conferência): **Haiku 4.5** (~80% mais barato).
 - **Leitura/varredura** (testador, hacker no recon, revisor-de-codigo, documentador): **Sonnet 5**.
-- **Construção/conserto** (criador, designer, ciberseguranca, corretor, otimizador): **Fable 5**.
-- **Crítico** (segurança, dinheiro, dados, bug cabeludo): **Fable 5** com **esforço máximo**.
-- **Ultracode:** Fable 5 + passada de **auto-revisão** (skill `code-review`) antes de entregar.
-- **Opus 4.8:** alternativa premium **lado a lado** do Fable (um segundo cérebro), **não**
-  um degrau acima dele.
+- **Construção simples** (landing page, página estática, texto, ajuste visual sem lógica): **Sonnet 5**.
+- **Construção/conserto com lógica** (criador, designer, ciberseguranca, corretor, otimizador): **Opus 4.8**.
+- **Crítico** (segurança, dinheiro, dados, bug cabeludo): **Opus 4.8** com **esforço máximo**.
+- **Ultracode:** Opus 4.8 + passada de **auto-revisão** (skill `code-review`) antes de entregar.
 
 O modelo troca de verdade em cada chamada de agente (parâmetro `model` no Task); o esforço
 (`low`→`max`) é ajuste de sessão. Detalhes na tabela dentro do `commands/gerente.md`.
@@ -196,6 +203,12 @@ todos os turnos seguintes. O time já foi desenhado para isso: trabalho pesado a
 têm **teto de ~25 linhas** com `arquivo:linha` em vez de código colado, e o `ESTADO.md` é
 memória externa enxuta. Do seu lado (o usuário):
 
+- **⚡ Case a complexidade do projeto ao esforço — o maior gasto é overkill.** Uma landing
+  page NÃO deve custar 100k+ de tokens: se custou, o pipeline pesado (9 agentes, Playwright,
+  fases de segurança) rodou num projeto que pedia o **Modo Rápido** (o gerente triа isso na
+  Fase 0). Site simples/estático sem login nem banco → construção inline ou 1 passada de
+  designer em **Sonnet 5**, sem as fases de segurança e sem QA formal. Diga ao gerente
+  *"é uma landing page simples, faz no modo rápido"* se ele não triar sozinho.
 - **`/clear` nos portões de fase** — o gerente avisa quando é seguro: o `ESTADO.md` guarda
   tudo e o `/retomar` re-hidrata em segundos. Maior ganho em projeto longo: janela sempre
   pequena em vez de arrastar 100k+ de histórico.
@@ -213,8 +226,9 @@ memória externa enxuta. Do seu lado (o usuário):
   com deny de leitura (node_modules, dist, locks, .env) — contexto inicial até ~90%
   menor e ninguém lê segredo por engano. (Não existe `.claudeignore` nativo; o
   equivalente oficial são as regras `permissions.deny` — foi o que usamos.)
-- **Modo econômico:** sessão em **Sonnet** — os agentes de construção continuam fixos em
-  **Fable 5** e o mecânico vai para **Haiku**. E o CLAUDE.md do projeto do cliente deve
-  ficar enxuto (< 200 linhas): ele entra em TODA mensagem.
+- **Modo econômico:** sessão em **Sonnet 5** — os agentes de construção pesada continuam
+  fixos em **Opus 4.8** (só entram quando há lógica de verdade), a construção simples e a
+  leitura ficam em **Sonnet** e o mecânico vai para **Haiku**. E o CLAUDE.md do projeto do
+  cliente deve ficar enxuto (< 200 linhas): ele entra em TODA mensagem.
 - **Opcional (ferramenta externa):** [RTK](https://github.com/rtk-ai/rtk) comprime output
   de comandos (git/testes/grep) em 60–90% antes de entrar no contexto (`rtk init --global`).

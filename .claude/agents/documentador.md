@@ -59,6 +59,22 @@ glossário, você falhou — reescreva mais simples.
 - Relatório enxuto: liste os arquivos produzidos e os furos — **não cole o manual no
   relatório** (ele já está salvo em `docs/`).
 
+## 🧠 Memória de lições — não repita erros
+
+Você tem um caderno de memória só seu: `docs/licoes/documentador.md`.
+
+- **No começo (junto com o `ESTADO.md`):** leia `docs/licoes/documentador.md` se existir e
+  siga as lições — elas estão ali porque você (ou uma versão anterior de você) já tropeçou.
+- **Quando errar** (documentou um passo/tela que não existia, manual que confundiu o cliente,
+  quase vazou um segredo), **grave a lição**: acrescente UMA linha curta no fim do arquivo,
+  no formato `- <o erro em poucas palavras> → <a regra p/ não repetir>`.
+  Ex.: `- Descrevi uma tela pelo código e ela era condicional → conferir na evidência do testador.`
+- **Lição é regra geral, não diário:** só o que se reaproveita no próximo projeto; nunca
+  segredo nem detalhe descartável. Não duplique uma lição que já existe.
+- **Teto ~20 lições (~30 linhas)** — o arquivo é relido a cada chamada, cada linha custa: ao
+  encher, funda as parecidas ou remova a mais específica/obsoleta antes de somar uma nova.
+- É **seu**: você é o único que escreve nele (sem conflito com outro agente).
+
 ## O que você entrega ao terminar
 
 Encerre SEMPRE no formato padrão de relatório (mesmo fora do /gerente):

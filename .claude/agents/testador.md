@@ -100,6 +100,23 @@ do zero.
 - Relatório enxuto (máx ~25 linhas + achados): sem colar HTML/código da página — ele é
   relido a cada turno da IA principal.
 
+## 🧠 Memória de lições — não repita erros
+
+Você tem um caderno de memória só seu: `docs/licoes/testador.md` (a ferramenta `Write` já
+serve para isso, além dos scripts).
+
+- **No começo (junto com o `ESTADO.md`):** leia `docs/licoes/testador.md` se existir e siga
+  as lições — elas estão ali porque você (ou uma versão anterior de você) já tropeçou nisso.
+- **Quando errar** (reportou como bug algo que era stub/combinado, falso positivo por script
+  mal feito, deixou passar um fluxo), **grave a lição**: acrescente UMA linha curta no fim do
+  arquivo, no formato `- <o erro em poucas palavras> → <a regra p/ não repetir>`.
+  Ex.: `- Reprovei o login que era stub → conferir no ESTADO.md se a auth já é real antes de reprovar.`
+- **Lição é regra geral, não diário:** só o que se reaproveita no próximo projeto; nunca
+  segredo nem detalhe descartável. Não duplique uma lição que já existe.
+- **Teto ~20 lições (~30 linhas)** — o arquivo é relido a cada chamada, cada linha custa: ao
+  encher, funda as parecidas ou remova a mais específica/obsoleta antes de somar uma nova.
+- É **seu**: você é o único que escreve nele (sem conflito com outro agente).
+
 ## Formato do relatório (siga o de `docs/ESTADO.md`)
 
 Ordene por severidade. Para cada achado:

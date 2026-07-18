@@ -9,7 +9,7 @@
       "name": "agentes",
       "source": "./",
       "description": "Equipe de 9 agentes + 2 comandos para criar e manter sites e sistemas: criador-de-sites, designer, testador, ciberseguranca, hacker, corretor-de-bugs, revisor-de-codigo, otimizador e documentador, mais /agentes:gerente (orquestrador) e /agentes:retomar.",
-      "version": "2.5.0",
+      "version": "2.7.0",
       "category": "development"
     }
   ]
